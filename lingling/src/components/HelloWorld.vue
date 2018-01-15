@@ -1,7 +1,7 @@
 <template>
   <div class="hello">
     <h1>{{ msg }}</h1>
-    <h2>Essential Links</h2>
+    <h2>Essential Links!</h2>
     <ul>
       <li><a href="https://vuejs.org" target="_blank">Core Docs</a></li>
       <li><a href="https://forum.vuejs.org" target="_blank">Forum</a></li>
@@ -17,6 +17,10 @@
       <li><a href="http://vue-loader.vuejs.org/" target="_blank">vue-loader</a></li>
       <li><a href="https://github.com/vuejs/awesome-vue" target="_blank">awesome-vue</a></li>
     </ul>
+    <el-input v-model="username" placeholder="请输入账号"></el-input>
+    <el-input v-model="password" placeholder="请输入密码"></el-input>
+    <el-button type="success" @click="register">注册</el-button>
+    <el-button type="success" @click="toHome">登录</el-button>
   </div>
 </template>
 
@@ -25,7 +29,41 @@ export default {
   name: 'HelloWorld',
   data () {
     return {
+      username: '',
+      password: '',
       msg: 'Welcome to Your Vue.js App'
+    }
+  },
+  created () {
+      this.$http({
+        url: "/api/",
+        method: "get",
+        params: {
+          ID: 123456
+        }
+      }).then(function (data) {
+        console.log(data.welcome);
+      })
+  },
+  methods: {
+    register() {
+      let _this = this;
+      //注册
+      this.$http({
+        url: "/api/",
+        method: "POST",
+        params: {
+          username: this.username,
+          password: this.password
+        }
+      }).then(function (argument) {
+        // console.log(argument);
+      })
+    },
+    toHome() {
+      let _this = this;
+      //登录
+      this.$router.push('/home');
     }
   }
 }
