@@ -1,36 +1,47 @@
 <template>
 	<div id="sidebar">
-		<el-button>热门</el-button><br>
-		<el-button>明星</el-button><br>
-		<el-button>头条</el-button><br>
-		<el-button>新鲜事</el-button><br>
-		<el-button>搞笑</el-button><br>
-		<el-button>社会</el-button><br>
-		<el-button>情感</el-button><br>
-		<el-button>时尚</el-button><br>
-		<el-button>军事</el-button><br>
-		<el-button>美女</el-button><br>
-		<el-button>体育</el-button><br>
-		<el-button>动漫</el-button><br>
+		<div @click="remainstyle">
+			<el-button>热门</el-button>
+			<el-button>明星</el-button>
+			<el-button>头条</el-button>
+			<el-button>新鲜事</el-button>
+			<el-button>搞笑</el-button>
+			<el-button>社会</el-button>
+			<el-button>情感</el-button>
+			<el-button>时尚</el-button>
+			<el-button>军事</el-button>
+			<el-button>美女</el-button>
+			<el-button>体育</el-button>
+			<el-button>动漫</el-button>
+		</div>
 	</div>
 </template>
-
 <script>
 export default {
+	data() {
+		return {
 
+		}
+	},
+	methods: {
+		remainstyle() {
+
+		}
+	}
 }
-</script>
 
+</script>
 <style scoped>
 .el-button {
 	color: #333;
 	font-size: 18px;
 	width: 100%;
-	margin-bottom: 3px;
+	margin: 0 0 3px 0;
 	border: none;
 }
 
 .el-button:hover {
 	background-color: #39a175;
 }
+
 </style>

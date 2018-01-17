@@ -2,28 +2,34 @@
 	<el-header>
 		<el-row type="flex" justify="start" :gutter="10">
 			<el-col :span="3">
-				<div class="logo grid-content"></div>
+				<div class="logo grid-content" @click="tohome"></div>
 			</el-col>
 			<el-col :span="8" :offset="1">
 				<el-input placeholder="搜索博客、找人" v-model="search" size="small">
 					<i slot="suffix" class="el-input__icon el-icon-search"></i>
 				</el-input>
 			</el-col>
-			<el-col :span="3" :offset="6">
+			<el-col :span="7" :offset="2">
 				<div class="h-list grid-content">
 					<ul class="header-list">
 						<li>
-							<el-button type="text"><i class="el-icon-menu el-icon--left"></i>首页</el-button>
+							<el-button type="text"><i class="icon-home1 el-icon--left"></i>首页</el-button>
 						</li>
 						<li>
-							<el-button type="text"><i class="el-icon-view el-icon--left"></i>发现</el-button>
+							<el-button type="text"><i class="icon-compass2 el-icon--left"></i>发现</el-button>
+						</li>
+						<li>
+							<el-button type="text"><i class="icon-play el-icon--left"></i>泠泠直播</el-button>
+						</li>
+						<li>
+							<el-button type="text"><i class="icon-steam el-icon--left"></i>游戏</el-button>
 						</li>
 					</ul>
 				</div>
 			</el-col>
 			<el-col :span="3">
 				<div>
-					<el-button type="text"><span class="register">注册</span></el-button>
+					<el-button type="text"><span class="regis">注册</span></el-button>
 					<el-button type="text"><span class="login">登录</span></el-button>
 				</div>
 			</el-col>
@@ -36,6 +42,11 @@ export default {
 		return {
 			search: ''
 		}
+	},
+	methods: {
+		tohome() {
+			this.$router.push('/');
+		}
 	}
 }
 
@@ -46,12 +57,21 @@ ul {
 	/*去掉ul默认内外边距*/
 	padding: 0;
 	margin: 0;
+	height: 60px;
 }
 
 .header-list li {
 	position: relative;
 	float: left;
-	margin-left: 25px;
+	/*margin-left: 10px;*/
+	/*font-size: 16px;*/
+	padding: 0 15px;
+	height: 60px;
+}
+
+.header-list .el-button {
+	color: #333;
+	font-size: 15px;
 }
 
 .header-list li:hover {
@@ -59,12 +79,12 @@ ul {
 }
 
 .header-list li i {
-	/*font-size: 20px;*/
+	/*font-size: 18px;*/
 }
 
 .el-button {
 	height: 60px;
-	color: #333;
+	color: #444;
 }
 
 .el-button:hover {
@@ -99,6 +119,7 @@ ul {
 	height: 60px;
 	background: url("../../assets/logo.png") no-repeat -25px;
 	background-size: 400px 55px;
+	cursor: pointer;
 }
 
 .grid-content {
@@ -111,7 +132,7 @@ ul {
 	background-color: #f9fafc;
 }
 
-.register {
+.regis {
 	padding-right: 16px;
 	border-right: solid #333 1px;
 }

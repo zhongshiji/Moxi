@@ -5,7 +5,7 @@ var router = express.Router();
 router.get('/', function(req, res, next) {
   // res.render('index', { title: 'Express' });
   // res.send('hello world')
-  console.log("express");
+  console.log("hello express!");
   res.json({ title:'express', welcome:'welcome to express!' });
   // res.redirect('/public/index.html');
   const wel = req.query.ID
