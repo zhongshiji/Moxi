@@ -14,8 +14,8 @@
 					<br>
 					<br>
 					<div style="margin-top: 5px;">
-						<el-button class="login-button" size="small" v-if="ifLogintab">登 录</el-button>
-						<el-button class="regis-button" size="small" v-if="ifRegisTab" type="danger">注 册</el-button>
+						<el-button class="login-button" size="small" v-if="ifLogintab" type="success" @click="login">登 录</el-button>
+						<el-button class="regis-button" size="small" v-if="ifRegisTab" type="danger" @click="regis">注 册</el-button>
 					</div>
 					<br>
 					<div style="float: right">
@@ -50,6 +50,60 @@ export default {
 		isRegisTab() {
 			this.ifLogintab = false;
 			this.ifRegisTab = true;
+		},
+		login() {
+			let _this = this;
+			this.$http.post('/api/users/signin', {
+				username: this.username,
+				password: this.password
+			}).then(function(res) {
+				if (res.data.signinCode == 1) {
+					_this.$router.push({ path: '/lingling' });
+					_this.$message({
+						showClose: true,
+						message: '登录成功',
+						type: 'success'
+					});
+				} else {
+					_this.$message({
+						showClose: true,
+						message: res.data,
+						type: 'error'
+					});
+				}
+			}).catch(function(e) {
+				console.log(e);
+			})
+		},
+		regis() {
+			let _this = this;
+			this.$http.post('/api/users/signup', {
+				username: this.username,
+				password: this.password
+			}).then(function(res) {
+				console.log('post successfully.');
+				if (res.data.signupcode == 1) {
+					_this.$message({
+						showClose: true,
+						message: '注册成功',
+						type: 'success'
+					});
+				} else if (res.data.signupcode == 0) {
+					_this.$message({
+						showClose: true,
+						message: '您当前注册的账号已被占用',
+						type: 'error'
+					});
+				} else {
+					_this.$message({
+						showClose: true,
+						message: res.data,
+						type: 'error'
+					});
+				}
+			}).catch(function(e) {
+				console.log(e);
+			})
 		}
 	}
 }
@@ -99,19 +153,18 @@ a {
 
 .login-button {
 	width: 100%;
-	background: #39a175;
 	font-size: 17px;
-	color: #fff;
-}
-
-.login-button:hover {
-	background: #43b987;
 }
 
 .regis-button {
 	width: 100%;
 	font-size: 17px;
-	color: #fff;
+}
+
+.messageStyle {
+	background: #000;
+	top: 200px;
+	margin: 50px;
 }
 
 </style>

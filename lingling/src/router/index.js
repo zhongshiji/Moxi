@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import home from '@/components/home'
-import usermain from '@/components/usermain'
+import lingling from '@/components/lingling'
 
 Vue.use(Router)
 
@@ -13,9 +13,9 @@ export default new Router({
       component: home
     },
     {
-    	path: '/usermain',
-    	name: 'usermain',
-    	component: usermain
+    	path: '/lingling',
+    	name: 'lingling',
+    	component: lingling
     }
   ]
 })

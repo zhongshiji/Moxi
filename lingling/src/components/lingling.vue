@@ -1,17 +1,17 @@
 <template>
-	<div id="usermain">
-	用户首页
+	<div id="lingling">
+		用户首页
 	</div>
 </template>
-
 <script>
 export default {
 
 }
-</script>
 
+</script>
 <style scoped>
-#usermain {
+#lingling {
 	padding: 60px 0 0 0;
 }
+
 </style>
