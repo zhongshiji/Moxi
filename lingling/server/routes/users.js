@@ -3,14 +3,16 @@ var express = require('express');
 var router = express.Router();
 
 const UserModel = require('../models/users')
+const checkLogin = require('../middlewares/check').checkLogin
+const checkNotLogin = require('../middlewares/check').checkNotLogin
 
 /* GET users listing. */
-router.get('/', function(req, res, next) {
+router.get('/', checkNotLogin, function(req, res, next) {
 	res.send('respond with a resource');
 	console.log("hello lingling!");
 });
 
-router.post('/signup', function(req, res, next) {
+router.post('/signup', checkNotLogin, function(req, res, next) {
 	const username = req.body.username
 	let password = req.body.password
 
@@ -51,7 +53,7 @@ router.post('/signup', function(req, res, next) {
 		})
 });
 
-router.post('/signin', function(req, res, next) {
+router.post('/signin', checkNotLogin, function(req, res, next) {
 	const username = req.body.username;
 	const password = req.body.password;
 
@@ -76,6 +78,9 @@ router.post('/signin', function(req, res, next) {
 			if(password !== user.password) {
 				return res.send('账号或密码错误')
 			}
+			// //用户信息写入session
+			// delete user.password
+			// req.session.user = user
 			return res.json({ signinCode: 1 })
 		})
 		.catch(next)
