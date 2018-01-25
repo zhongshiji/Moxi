@@ -26,5 +26,4 @@ export default {
 .el-message {
 	top: 75px;
 }
-
 </style>

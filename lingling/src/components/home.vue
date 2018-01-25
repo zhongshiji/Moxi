@@ -56,12 +56,11 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 #home {
+	position: absolute;
 	width: 100%;
-	margin: 0;
-	padding: 0;
 	top: 0;
 	left: 0;
-	position: absolute;
+	margin: 0;
 	padding: 60px 0 0 0;
 }
 

@@ -13,7 +13,7 @@
 				<div class="h-list grid-content">
 					<ul class="header-list">
 						<li>
-							<el-button type="text"><i class="icon-home1 el-icon--left"></i>首页</el-button>
+							<el-button type="text" ><i class="icon-home1 el-icon--left"></i>首页</el-button>
 						</li>
 						<li>
 							<el-button type="text"><i class="icon-compass2 el-icon--left"></i>发现</el-button>
@@ -28,24 +28,39 @@
 				</div>
 			</el-col>
 			<el-col :span="3">
-				<div>
-					<el-button type="text"><span class="regis">注册</span></el-button>
-					<el-button type="text"><span class="login">登录</span></el-button>
-				</div>
+				<regisandlogin v-if="!user"></regisandlogin>
+				<haveloggedin v-if="user"></haveloggedin>
 			</el-col>
 		</el-row>
 	</el-header>
 </template>
 <script>
+import regisandlogin from './head/regisandlogin'
+import haveloggedin from './head/haveloggedin'
 export default {
 	data() {
 		return {
 			search: ''
 		}
 	},
+	components: {
+		regisandlogin: regisandlogin,
+		haveloggedin: haveloggedin
+	},
 	methods: {
 		tohome() {
 			this.$router.push('/');
+		}
+	},
+	computed: {
+		user () {
+			return this.$store.state.user;
+		}
+	},
+	watch: {
+		$route(to,from) {
+			console.log(to);
+			console.log(from);
 		}
 	}
 }
@@ -65,7 +80,7 @@ ul {
 	float: left;
 	/*margin-left: 10px;*/
 	/*font-size: 16px;*/
-	padding: 0 15px;
+	padding: 0 20px;
 	height: 60px;
 }
 
@@ -84,7 +99,6 @@ ul {
 
 .el-button {
 	height: 60px;
-	color: #444;
 }
 
 .el-button:hover {
@@ -98,7 +112,7 @@ ul {
 	left: 0;
 	/*background-color: #fff;*/
 	background-color: rgba(54, 128, 94, 0.94);
-	color: #ccc;
+	color: #444;
 	text-align: center;
 	line-height: 60px;
 	z-index: 9999;
@@ -130,11 +144,6 @@ ul {
 .row-bg {
 	padding: 10px 0;
 	background-color: #f9fafc;
-}
-
-.regis {
-	padding-right: 16px;
-	border-right: solid #333 1px;
 }
 
 </style>

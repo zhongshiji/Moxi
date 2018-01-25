@@ -1,6 +1,6 @@
 module.exports = {
 	checkLogin: function checkLogin(req, res, next) {
-		if (!req.session.uesr) {
+		if (!req.session.user) {
 			return res.json({ checkCode: 0 })
 		}
 		next()
