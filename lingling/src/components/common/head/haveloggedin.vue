@@ -26,11 +26,21 @@ export default {
 	methods: {
 		logout() {
 			let _this = this;
-			this.$http.get('/')
+			this.$http.get('/api/users/signout')
 				.then(function(res) {
-					sessionStorage.clear();
-					_this.$store.commit('clearUser');
-					_this.$router.push('/');
+					if (res.data.checkCode == 0) {
+						_this.$message({
+							showClose: true,
+							message: '尚未登录',
+							type: 'error'
+						});
+						_this.$router.push('/');
+					} else {
+						sessionStorage.clear();
+						_this.$store.commit('clearUser');
+						_this.$router.push('/');
+						_this.$message({ showClose: true, message: '已退出', type: 'success' });
+					}
 				})
 		}
 	}

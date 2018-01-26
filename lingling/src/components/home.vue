@@ -39,13 +39,14 @@ export default {
 		'right': right
 	},
 	created() {
-		this.$http.get('/api/', {
-			params: {
-				ID: 123456
-			}
-		}).then(function(res) {
-			console.log(res.data.welcome);
-		})
+		let _this = this;
+		this.$http.get('/api/')
+			.then(function(res) {
+				if (res.data.checkCode == 1) {
+					_this.$router.push('/lingling');
+				}
+				console.log(res.data.welcome);
+			})
 	},
 	methods: {
 

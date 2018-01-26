@@ -7,7 +7,20 @@
 </template>
 <script>
 export default {
+	data() {
+		return {
 
+		}
+	},
+	created() {
+		let _this = this;
+		this.$http.get('/api/users')
+			.then(function(res) {
+				if (res.data.checkCode == 0) {
+					_this.$router.push('/');
+				}
+			})
+	}
 }
 
 </script>

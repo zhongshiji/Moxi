@@ -9,11 +9,11 @@
 					<i slot="suffix" class="el-input__icon el-icon-search"></i>
 				</el-input>
 			</el-col>
-			<el-col :span="7" :offset="2">
+			<el-col :span="8" :offset="1">
 				<div class="h-list grid-content">
 					<ul class="header-list">
 						<li>
-							<el-button type="text" ><i class="icon-home1 el-icon--left"></i>首页</el-button>
+							<el-button type="text" @click="tohome"><i class="icon-home1 el-icon--left"></i>首页</el-button>
 						</li>
 						<li>
 							<el-button type="text"><i class="icon-compass2 el-icon--left"></i>发现</el-button>
@@ -59,8 +59,8 @@ export default {
 	},
 	watch: {
 		$route(to,from) {
-			console.log(to);
-			console.log(from);
+			// console.log(to);
+			// console.log(from);
 		}
 	}
 }
@@ -86,7 +86,7 @@ ul {
 
 .header-list .el-button {
 	color: #333;
-	font-size: 15px;
+	font-size: 14px;
 }
 
 .header-list li:hover {

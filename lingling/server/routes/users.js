@@ -7,8 +7,8 @@ const checkLogin = require('../middlewares/check').checkLogin
 const checkNotLogin = require('../middlewares/check').checkNotLogin
 
 /* GET users listing. */
-router.get('/', checkNotLogin, function(req, res, next) {
-	res.send('respond with a resource');
+router.get('/', checkLogin, function(req, res, next) {
+	res.send('Welcome to your lingling!');
 	console.log("hello lingling!");
 });
 
@@ -39,8 +39,8 @@ router.post('/signup', checkNotLogin, function(req, res, next) {
 	//用户信息写入数据库
 	UserModel.create(user)
 		.then(function(result) {
-			//此 user 是插入 mongodb后的值，包含_id
-			user = result.ops[0]
+			// user = result.ops[0]//此 user 是插入 mongodb后的值，包含_id
+			console.log(result);
 			console.log('注册成功')
 			res.json({ signupcode: 1 })
 		})
@@ -78,11 +78,18 @@ router.post('/signin', checkNotLogin, function(req, res, next) {
 			if(password !== user.password) {
 				return res.send('账号或密码错误')
 			}
-			// //用户信息写入session
-			// delete user.password
-			// req.session.user = user
+			//用户信息写入session
+			delete user.password
+			req.session.user = user
 			return res.json({ signinCode: 1 })
 		})
 		.catch(next)
+})
+
+router.get('/signout', checkLogin, function (req, res, next) {
+	//清空session中用户信息
+	req.session.user = null;
+	console.log(req.session.user)
+	return res.json({ signoutCode: 1 });
 })
 module.exports = router;
