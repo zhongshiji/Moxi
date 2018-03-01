@@ -21,9 +21,18 @@ export default {
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 	color: #2c3e50;
+	font-size: 14px;
+}
+
+h1 {
+	margin: 0;
 }
 
 .el-message {
 	top: 75px;
+}
+
+.el-textarea__inner {
+	border: none;
 }
 </style>

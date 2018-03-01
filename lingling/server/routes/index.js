@@ -9,8 +9,7 @@ module.exports = function(app) {
 		res.json({ title: 'express', welcome: 'welcome to express!' });
 	});
 
-	app.use('/users', require('./users'));
-	// app.use();
-	// app.use();
+	app.use('/users', require('./users'));//用户注册、登录、登出
+	app.use('/posts', require('./posts'));//发表、修改、删除文章
 
 }

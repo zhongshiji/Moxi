@@ -3,7 +3,7 @@
 		<el-dropdown>
 			<el-button>
 				<div class="headshot">
-					<img src="../../../assets/me.jpg" alt="咘噜咘噜嘻哗哒" />
+					<img src="../../../assets/headshot.jpg" alt="咘噜咘噜嘻哗哒" />
 				</div>
 				<i class="el-icon-caret-bottom el-icon--left"></i>
 			</el-button>
@@ -36,7 +36,7 @@ export default {
 						});
 						_this.$router.push('/');
 					} else {
-						sessionStorage.clear();
+						localStorage.clear();
 						_this.$store.commit('clearUser');
 						_this.$router.push('/');
 						_this.$message({ showClose: true, message: '已退出', type: 'success' });
@@ -59,7 +59,7 @@ export default {
 
 .el-button {
 	display: block;
-	height: 60px;
+	height: 54px;
 	background: transparent;
 	border: none;
 	/*padding: 0;
@@ -81,7 +81,7 @@ export default {
 
 
 .el-icon-caret-bottom {
-	padding-top: 10px;
+	padding-top: 9px;
 }
 
 </style>

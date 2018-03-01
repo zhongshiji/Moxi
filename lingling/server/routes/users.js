@@ -92,4 +92,5 @@ router.get('/signout', checkLogin, function (req, res, next) {
 	console.log(req.session.user)
 	return res.json({ signoutCode: 1 });
 })
+
 module.exports = router;

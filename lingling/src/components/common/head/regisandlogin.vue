@@ -17,6 +17,7 @@ export default {
 }
 
 .el-button {
+	font-size: 13px;
 	color: #444;
 }
 

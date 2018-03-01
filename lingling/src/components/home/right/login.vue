@@ -59,7 +59,7 @@ export default {
 			}).then(function(res) {
 				if (res.data.signinCode == 1) {
 					_this.$store.commit('setUsername', JSON.stringify({username: _this.username}));
-					console.log(sessionStorage.getItem('user'));
+					console.log(localStorage.getItem('user'));
 					_this.$router.push({ path: '/lingling' });
 					_this.$message({
 						showClose: true,

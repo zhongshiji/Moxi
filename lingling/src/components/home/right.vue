@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import login from '../common/right/login.vue'
+import login from '../home/right/login.vue'
 export default {
 	data () {
 		return {

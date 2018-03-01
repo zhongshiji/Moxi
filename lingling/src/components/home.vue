@@ -21,10 +21,10 @@
 	</div>
 </template>
 <script>
-import sidebar from './common/sidebar'
+import sidebar from './home/sidebar'
 import carousel from './common/carousel'
 import posts from './common/posts'
-import right from './common/right'
+import right from './home/right'
 export default {
 	name: 'home',
 	data() {
@@ -62,7 +62,7 @@ export default {
 	top: 0;
 	left: 0;
 	margin: 0;
-	padding: 60px 0 0 0;
+	padding: 54px 0 0 0;
 }
 
 .LL-layout {

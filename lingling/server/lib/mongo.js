@@ -27,3 +27,12 @@ exports.User = mongolass.model('User', {
 	password: { type: 'string', required: true }
 })
 exports.User.index({ username: 1 }, { unique: true }).exec() //根据用户名找到用户，用户名全局唯一
+
+exports.Post = mongolass.model('Post', {
+  author: { type: Mongolass.Types.ObjectId, required: true },
+  title: { type: 'string', required: true },
+  content: { type: 'string', required: true },
+  classify: { type: 'string', requred: true },
+  pv: { type: 'number', default: 0 }
+})
+exports.Post.index({ author: 1, _id: -1 }).exec()//按创建时间降序查看用户的文章列表

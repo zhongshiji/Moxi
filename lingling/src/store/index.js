@@ -9,12 +9,12 @@ Vue.use(Vuex)
  */
 const store = new Vuex.Store({
 	state: {
-		user: sessionStorage.getItem('user')
+		user: localStorage.getItem('user')
 	},
 	mutations: {
 		setUsername(state, _user) {
 			state.user = _user;
-			sessionStorage.setItem('user', _user)
+			localStorage.setItem('user', _user)
 		},
 		clearUser(state) {
 			state.user = null;

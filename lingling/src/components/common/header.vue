@@ -1,5 +1,5 @@
 <template>
-	<el-header>
+	<header class="el-header">
 		<el-row type="flex" justify="start" :gutter="10">
 			<el-col :span="3">
 				<div class="logo grid-content" @click="tohome"></div>
@@ -32,7 +32,7 @@
 				<haveloggedin v-if="user"></haveloggedin>
 			</el-col>
 		</el-row>
-	</el-header>
+	</header>
 </template>
 <script>
 import regisandlogin from './head/regisandlogin'
@@ -49,16 +49,25 @@ export default {
 	},
 	methods: {
 		tohome() {
-			this.$router.push('/');
+			let _this = this;
+			// this.$http.get('/api/')
+			// 	.then(function (res) {
+			// 		if(res.data.checkCode == 1) {
+			// 			_this.$router.push('/');
+			// 		} else {
+			// 			_this.$router.push('/lingling');
+			// 			console.log('helloxxxxxxxxx')
+			// 		}
+			// 	})
 		}
 	},
 	computed: {
-		user () {
+		user() {
 			return this.$store.state.user;
 		}
 	},
 	watch: {
-		$route(to,from) {
+		$route(to, from) {
 			// console.log(to);
 			// console.log(from);
 		}
@@ -72,16 +81,20 @@ ul {
 	/*去掉ul默认内外边距*/
 	padding: 0;
 	margin: 0;
-	height: 60px;
+	height: 54px;
+}
+
+.h-list {
+	overflow: hidden;
 }
 
 .header-list li {
 	position: relative;
-	float: left;
+	display: inline-block;
 	/*margin-left: 10px;*/
 	/*font-size: 16px;*/
 	padding: 0 20px;
-	height: 60px;
+	height: 54px;
 }
 
 .header-list .el-button {
@@ -98,7 +111,7 @@ ul {
 }
 
 .el-button {
-	height: 60px;
+	height: 54px;
 }
 
 .el-button:hover {
@@ -108,13 +121,14 @@ ul {
 .el-header {
 	position: fixed;
 	width: 100%;
+	height: 54px;
 	top: 0;
 	left: 0;
 	/*background-color: #fff;*/
 	background-color: rgba(54, 128, 94, 0.94);
 	color: #444;
 	text-align: center;
-	line-height: 60px;
+	line-height: 54px;
 	z-index: 9999;
 }
 
@@ -125,12 +139,12 @@ ul {
 }
 
 .el-col {
-	height: 60px;
+	height: 54px;
 	border-radius: 4px;
 }
 
 .logo {
-	height: 60px;
+	height: 54px;
 	background: url("../../assets/logo.png") no-repeat -25px;
 	background-size: 400px 55px;
 	cursor: pointer;
