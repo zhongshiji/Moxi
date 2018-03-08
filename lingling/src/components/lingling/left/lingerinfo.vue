@@ -1,9 +1,9 @@
 <template>
 	<div id="lingerinfo">
-		<div class="ll-headshot">
+		<div class="ll-headshot" @click="toChangeInfo">
 			<img src="../../.././assets/headshot.jpg" title="change your avatar">
 		</div>
-		<div class="ll-nickname">
+		<div class="ll-nickname" @click="toChangeInfo">
 			<h1>
 				<span class="ll-nick">{{ this.nickname.nick }}</span>
 				<span class="ll-user">{{ this.nickname.user }}</span>
@@ -23,11 +23,32 @@ export default {
 	data() {
 		return {
 			nickname: {
-				nick: 'Er_shenger',
-				user: 'lingling'
+				nick: '',
+				user: JSON.parse(localStorage.getItem('user')).username
 			},
-			introduction: 'In front of you is a beautiful world.',
-			email: 'Er_shenger@lingling.com'
+			introduction: '',
+			email: ''
+		}
+	},
+	created() {
+		let _this = this;
+		this.$http.get('api/users/userinfo')
+			.then(function(res) {
+				if (!res.data.nickname) {
+					_this.nickname.nick = '泠泠用户';
+					_this.email = '点击用户名填写email信息';
+					_this.introduction = '这个人很懒，什么都没有留下。';
+				} else {
+					_this.nickname.nick = res.data.nickname;
+					_this.nickname.user = res.data.username;
+					_this.email = res.data.email;
+					_this.introduction = res.data.introduction;
+				}
+			})
+	},
+	methods: {
+		toChangeInfo() {
+			this.$router.push('/lingling/changeinfo')
 		}
 	}
 }
@@ -36,6 +57,7 @@ export default {
 <style scoped>
 .ll-headshot {
 	height: 230px;
+	cursor: pointer;
 }
 
 .ll-headshot img {
@@ -45,6 +67,7 @@ export default {
 
 .ll-nickname {
 	padding: 16px 0;
+	cursor: pointer;
 }
 
 .ll-nick {

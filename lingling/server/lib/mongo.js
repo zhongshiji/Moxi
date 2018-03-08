@@ -24,9 +24,24 @@ mongolass.plugin('addCreatedAt', {
 
 exports.User = mongolass.model('User', {
 	username: { type: 'string', required: true },
-	password: { type: 'string', required: true }
+	password: { type: 'string', required: true },
+  // nickname: { type: 'string' },
+  // gender: { type: 'string', enum: ['m', 'f', 'x'], default: 'x' },
+  // email: { type: 'string' },
+  // avatar: { type: 'string' },
+  // introduction: { type: 'string' }
 })
 exports.User.index({ username: 1 }, { unique: true }).exec() //根据用户名找到用户，用户名全局唯一
+
+exports.UserInfo = mongolass.model('UserInfo', {
+  username: { type: 'string' },
+  nickname: { type: 'string' },
+  gender: { type: 'string', enum: ['m', 'f', 'x'], default: 'x' },
+  email: { type: 'string' },
+  // avatar: { type: 'string' },
+  introduction: { type: 'string' }
+})
+// exports.UserInfo.index({ username: 1 }, { unique: true }).exec() //根据用户名找到用户，用户名全局唯一
 
 exports.Post = mongolass.model('Post', {
   author: { type: Mongolass.Types.ObjectId, required: true },
