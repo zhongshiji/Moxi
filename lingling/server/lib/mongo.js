@@ -40,6 +40,7 @@ exports.UserInfo = mongolass.model('UserInfo', {
 
 exports.Post = mongolass.model('Post', {
   author: { type: Mongolass.Types.ObjectId, required: true },
+  nickname: { type: 'string', required: true },
   imageUrl: { type: 'string', required: true },
   title: { type: 'string', required: true },
   content: { type: 'string', required: true },

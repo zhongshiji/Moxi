@@ -17,7 +17,6 @@ const upload = multer({
 /* GET users listing. */
 router.get('/', checkLogin, function(req, res, next) {
 	res.send('Welcome to your lingling!');
-	console.log("hello lingling!");
 });
 
 router.post('/signup', checkNotLogin, function(req, res, next) {
@@ -99,7 +98,7 @@ router.post('/signin', checkNotLogin, function(req, res, next) {
 			//用户信息写入session
 			delete user.password
 			req.session.user = user
-			return res.json({ signinCode: 1 })
+			return res.json({ signinCode: 1, user: user })
 		})
 		.catch(next)
 })
@@ -107,12 +106,10 @@ router.post('/signin', checkNotLogin, function(req, res, next) {
 router.get('/signout', checkLogin, function(req, res, next) {
 	//清空session中用户信息
 	req.session.user = null;
-	console.log(req.session.user)
 	return res.json({ signoutCode: 1 });
 })
 
 router.get('/userinfo', function (req, res, next) {
-	console.log(req.session.user.username)
 	UserInfo.getUserInfoByName(req.session.user.username)
 		.then(function (UserInfo) {
 			res.send(UserInfo)
@@ -120,7 +117,6 @@ router.get('/userinfo', function (req, res, next) {
 })
 
 router.post('/changeinfo', checkLogin, function(req, res, next) {
-	console.log(req.body)
 	const username = req.body.username
 	const nickname = req.body.form.nickname
 	const gender = req.body.form.gender
@@ -146,8 +142,6 @@ router.post('/changeinfo', checkLogin, function(req, res, next) {
 })
 
 router.post('/upload', upload.single('avatarUpload'), function (req, res, next) {
-	console.log(req.file.path);
-	console.log(req.file.originalname);
 	fs.rename(req.file.path, "static/images/upload/" + req.file.originalname, err => {
 		if (err) {
 			throw err;

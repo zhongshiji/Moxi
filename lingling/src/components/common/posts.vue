@@ -7,7 +7,7 @@
 				</div>
 				<div class="a-post-detail">
 					<div class="post-title">
-						{{ post.author.username }}: {{ post.title }}
+						{{ post.nickname }}: {{ post.title }}
 					</div>
 					<div class="post-time">
 						{{ post.created_at }}
@@ -38,13 +38,16 @@ export default {
 
 	},
 	mounted () {
+		console.log(this.author)
 		let _this = this;
-		this.$http.get('/api/posts/')
-			.then(function(res) {
+		this.$http.get('/api/posts/', {
+			params: { author: this.author }
+		}).then(function(res) {
 				_this.posts = res.data;
 				console.log(_this.posts)
 			})
-	}
+	},
+	props: ['author']
 }
 
 </script>

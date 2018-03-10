@@ -58,7 +58,9 @@ export default {
 				password: this.password
 			}).then(function(res) {
 				if (res.data.signinCode == 1) {
-					_this.$store.commit('setUsername', JSON.stringify({username: _this.username}));
+					console.log(res.data.user)
+					localStorage.setItem('userDetail', JSON.stringify(res.data.user))
+					_this.$store.commit('setUsername', JSON.stringify({ username: _this.username }));
 					console.log(localStorage.getItem('user'));
 					_this.$router.push({ path: '/lingling' });
 					_this.$message({

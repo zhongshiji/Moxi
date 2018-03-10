@@ -6,7 +6,7 @@ const checkLogin = require('../middlewares/check').checkLogin
 
 router.get('/', function (req, res, next) {
 	const author = req.query.author
-
+	console.log(req.session)
 	PostModel.getPosts(author)
 		.then(function (posts) {
 			return res.send(posts)
@@ -16,6 +16,7 @@ router.get('/', function (req, res, next) {
 //POST /posts/create 发表一篇文章
 router.post('/create', checkLogin, function (req, res, next) {
 	const author = req.session.user._id
+	const nickname = req.body.nickname
 	const title = req.body.title
 	const imageUrl = req.body.imageUrl
 	const content = req.body.content
@@ -23,6 +24,7 @@ router.post('/create', checkLogin, function (req, res, next) {
 
 	let post = {
 		author: author,
+		nickname: nickname,
 		imageUrl: imageUrl,
 		title: title,
 		content: content,

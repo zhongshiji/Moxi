@@ -1,6 +1,6 @@
 <template>
 	<div id="lingerinfo">
-		<div class="ll-headshot" @click="toChangeInfo">
+		<div class="ll-headshot" @click="toUserMain">
 			<img :src="imageUrl" title="change your avatar">
 		</div>
 		<div class="ll-nickname" @click="toChangeInfo">
@@ -56,7 +56,10 @@ export default {
 			})
 	},
 	methods: {
-		toChangeInfo() {
+		toUserMain () {
+			this.$router.push('/lingling/usermain')
+		},
+		toChangeInfo () {
 			this.$router.push('/lingling/changeinfo')
 		}
 	}

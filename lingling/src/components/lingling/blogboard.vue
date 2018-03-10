@@ -31,6 +31,7 @@
 export default {
 	data() {
 		return {
+			nickname: '',
 			imageUrl: '',
 			title: '',
 			content: '',
@@ -82,6 +83,7 @@ export default {
 					_this.imageUrl = 'static/images/headshot.jpg';
 				} else {
 					_this.imageUrl = res.data.imageUrl;
+					_this.nickname = res.data.nickname;
 				}
 			});
 	},
@@ -92,6 +94,7 @@ export default {
 			// console.log(this.content);
 			// console.log(this.classify.toString());
 			this.$http.post('/api/posts/create', {
+				nickname: this.nickname,
 				imageUrl: this.imageUrl,
 				title: this.title,
 				content: this.content,

@@ -8,7 +8,7 @@
 				<i class="el-icon-caret-bottom el-icon--left"></i>
 			</el-button>
 			<el-dropdown-menu slot="dropdown">
-				<el-dropdown-item><i class="icon-library el-icon--left"></i> 我的主页</el-dropdown-item>
+				<el-dropdown-item @click.native="toUserMain"><i class="icon-library el-icon--left"></i> 我的主页</el-dropdown-item>
 				<el-dropdown-item><i class="icon-quill el-icon--left"></i> 写博客</el-dropdown-item>
 				<el-dropdown-item @click.native="toChangeInfo"><i class="icon-cog el-icon--left"></i> 个人设置</el-dropdown-item>
 				<el-dropdown-item @click.native="logout"><i class="icon-switch el-icon--left"></i> 退出</el-dropdown-item>
@@ -53,6 +53,9 @@ export default {
 						_this.$message({ showClose: true, message: '已退出', type: 'success' });
 					}
 				})
+		},
+		toUserMain () {
+			this.$router.push('/lingling/usermain')
 		},
 		toChangeInfo () {
 			this.$router.push('/lingling/changeinfo')
