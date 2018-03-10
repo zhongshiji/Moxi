@@ -9,12 +9,14 @@
 					<div class="title">
 						<h2 class="Subhead-heading">修改个人资料</h2>
 					</div>
-					<!-- <div class="ll-headshot">
-						<el-upload class="avatar-uploader" action="api/users/userinfo" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
-							<img v-if="imageUrl" :src="imageUrl" class="avatar">
-							<i v-else class="el-icon-plus avatar-uploader-icon"></i>
-						</el-upload>
-					</div> -->
+					<div class="ll-headshot">
+						<el-form enctype="multipart/form-data" method="post">
+							<el-upload class="avatar-uploader" name="avatarUpload" action="api/users/upload" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
+								<img v-if="imageUrl" :src="imageUrl" class="avatar">
+								<i v-else class="el-icon-plus avatar-uploader-icon"></i>
+							</el-upload>
+						</el-form>
+					</div>
 					<div class="ll-form">
 						<el-form ref="form" :model="form" label-width="100px" enctype="multipart/form-data">
 							<!-- <el-form-item label="用户头像：">
@@ -72,25 +74,32 @@ export default {
 				username: JSON.parse(localStorage.getItem('user')).username,
 				form: _this.form
 			}).then(function(res) {
-				console.log('xxxxxxxxxx')
 				location.reload()
 			})
 		},
-		// handleAvatarSuccess(res, file) {
-		// 	this.imageUrl = URL.createObjectURL(file.raw);
-		// },
-		// beforeAvatarUpload(file) {
-		// 	const isJPG = file.type === 'image/jpeg';
-		// 	const isLt2M = file.size / 1024 / 1024 < 2;
+		handleAvatarSuccess(res, file) {
+			let _this = this;
+			console.log(res.imageUrl)
+			// this.imageUrl = URL.createObjectURL(file.raw);
+			this.imageUrl = res.imageUrl;
+			this.$http.post('/api/users/changeAvatar', {
+				imageUrl: this.imageUrl
+			}).then(function (res) {
+				location.reload()
+			})
+		},
+		beforeAvatarUpload(file) {
+			const isJPG = file.type === 'image/jpeg';
+			const isLt2M = file.size / 1024 / 1024 < 2;
 
-		// 	if (!isJPG) {
-		// 		this.$message.error('上传头像图片只能是 JPG 格式!');
-		// 	}
-		// 	if (!isLt2M) {
-		// 		this.$message.error('上传头像图片大小不能超过 2MB!');
-		// 	}
-		// 	return isJPG && isLt2M;
-		// }
+			if (!isJPG) {
+				this.$message.error('上传头像图片只能是 JPG 格式!');
+			}
+			if (!isLt2M) {
+				this.$message.error('上传头像图片大小不能超过 2MB!');
+			}
+			return isJPG && isLt2M;
+		}
 	},
 	components: {
 		'left': left

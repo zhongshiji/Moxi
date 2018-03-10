@@ -3,7 +3,7 @@
 		<el-dropdown>
 			<el-button>
 				<div class="headshot">
-					<img src="../../../assets/headshot.jpg" alt="咘噜咘噜嘻哗哒" />
+					<img :src="imageUrl" alt="咘噜咘噜嘻哗哒" />
 				</div>
 				<i class="el-icon-caret-bottom el-icon--left"></i>
 			</el-button>
@@ -20,8 +20,19 @@
 export default {
 	data() {
 		return {
-
+			imageUrl: ''
 		}
+	},
+	created() {
+		let _this = this;
+		this.$http.get('api/users/userinfo')
+			.then(function(res) {
+				if (!res.data.imageUrl) {
+					_this.imageUrl = 'static/images/headshot.jpg';
+				} else {
+					_this.imageUrl = res.data.imageUrl;
+				}
+			})
 	},
 	methods: {
 		logout() {

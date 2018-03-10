@@ -17,11 +17,13 @@ router.get('/', function (req, res, next) {
 router.post('/create', checkLogin, function (req, res, next) {
 	const author = req.session.user._id
 	const title = req.body.title
+	const imageUrl = req.body.imageUrl
 	const content = req.body.content
 	const classify = req.body.classify
 
 	let post = {
 		author: author,
+		imageUrl: imageUrl,
 		title: title,
 		content: content,
 		classify: classify

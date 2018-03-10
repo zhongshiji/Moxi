@@ -1,7 +1,7 @@
 <template>
 	<div id="lingerinfo">
 		<div class="ll-headshot" @click="toChangeInfo">
-			<img src="../../.././assets/headshot.jpg" title="change your avatar">
+			<img :src="imageUrl" title="change your avatar">
 		</div>
 		<div class="ll-nickname" @click="toChangeInfo">
 			<h1>
@@ -26,8 +26,9 @@ export default {
 				nick: '',
 				user: JSON.parse(localStorage.getItem('user')).username
 			},
-			introduction: '',
-			email: ''
+			email: '',
+			imageUrl: '',
+			introduction: ''
 		}
 	},
 	created() {
@@ -43,6 +44,14 @@ export default {
 					_this.nickname.user = res.data.username;
 					_this.email = res.data.email;
 					_this.introduction = res.data.introduction;
+				}
+			});
+		this.$http.get('api/users/userinfo')
+			.then(function(res) {
+				if (!res.data.imageUrl) {
+					_this.imageUrl = 'static/images/headshot.jpg';
+				} else {
+					_this.imageUrl = res.data.imageUrl;
 				}
 			})
 	},
@@ -62,6 +71,7 @@ export default {
 
 .ll-headshot img {
 	border-radius: 6px;
+	width: 230px;
 	height: 230px;
 }
 

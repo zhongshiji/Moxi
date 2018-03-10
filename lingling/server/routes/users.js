@@ -1,11 +1,18 @@
 // const path = require('path');
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const multer = require('multer');
+const fs = require('fs');
+const router = express.Router();
 
 const UserModel = require('../models/users')
 const UserInfo = require('../models/userinfos')
 const checkLogin = require('../middlewares/check').checkLogin
 const checkNotLogin = require('../middlewares/check').checkNotLogin
+
+//设置图片上传目录位置
+const upload = multer({
+	dest: 'static/images/upload/'
+})
 
 /* GET users listing. */
 router.get('/', checkLogin, function(req, res, next) {
@@ -42,6 +49,7 @@ router.post('/signup', checkNotLogin, function(req, res, next) {
 		nickname: null,
 		gender: 'x',
 		email: null,
+		imageUrl: null,
 		introduction: null
 	}
 
@@ -103,7 +111,7 @@ router.get('/signout', checkLogin, function(req, res, next) {
 	return res.json({ signoutCode: 1 });
 })
 
-router.get('/userinfo', checkLogin, function (req, res, next) {
+router.get('/userinfo', function (req, res, next) {
 	console.log(req.session.user.username)
 	UserInfo.getUserInfoByName(req.session.user.username)
 		.then(function (UserInfo) {
@@ -134,6 +142,29 @@ router.post('/changeinfo', checkLogin, function(req, res, next) {
 			return res.json({ infoCode: 1 })
 		}).catch(function (e) {
 			console.log(e)
+		})
+})
+
+router.post('/upload', upload.single('avatarUpload'), function (req, res, next) {
+	console.log(req.file.path);
+	console.log(req.file.originalname);
+	fs.rename(req.file.path, "static/images/upload/" + req.file.originalname, err => {
+		if (err) {
+			throw err;
+			res.json({ state: 0, msg: '图片上传失败，请刷新重试' })
+		}
+		res.json({ state: 1, msg: '图片上传成功', imageUrl: "static/images/upload/" + req.file.originalname })
+	})
+})
+
+router.post('/changeAvatar', function (req, res) {
+	UserInfo.update(req.session.user.username, { 'imageUrl': req.body.imageUrl })
+		.then(function (result) {
+			if (result.result.ok == 1 ) {
+				res.json({ state: 1, msg: '图片上传成功' })
+			} else {
+				res.json({ state: 0, msg: '图片上传失败' })
+			}
 		})
 })
 

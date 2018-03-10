@@ -50,15 +50,14 @@ export default {
 	methods: {
 		tohome() {
 			let _this = this;
-			// this.$http.get('/api/')
-			// 	.then(function (res) {
-			// 		if(res.data.checkCode == 1) {
-			// 			_this.$router.push('/');
-			// 		} else {
-			// 			_this.$router.push('/lingling');
-			// 			console.log('helloxxxxxxxxx')
-			// 		}
-			// 	})
+			this.$http.get('/api/')
+				.then(function (res) {
+					if(res.data.checkCode == 1) {
+						_this.$router.push('/lingling');
+					} else {
+						_this.$router.push('/');
+					}
+				})
 		}
 	},
 	computed: {

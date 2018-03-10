@@ -3,6 +3,7 @@
 		<div class="a-post" v-for="post in posts">
 			<div class="a-post-layout">
 				<div class="headshot">
+					<img :src="post.imageUrl" title="咘噜咘噜嘻哗哒" />
 				</div>
 				<div class="a-post-detail">
 					<div class="post-title">
@@ -30,19 +31,18 @@
 export default {
 	data() {
 		return {
-			posts: [],
+			posts: []
 		}
 	},
 	methods: {
 
 	},
-	created() {
+	mounted () {
 		let _this = this;
-		console.log('hellp')
 		this.$http.get('/api/posts/')
 			.then(function(res) {
-				console.log(res.data)
 				_this.posts = res.data;
+				console.log(_this.posts)
 			})
 	}
 }
@@ -65,10 +65,13 @@ export default {
 
 .headshot {
 	float: left;
+}
+
+.headshot img {
 	width: 50px;
 	height: 50px;
-	background: #ccc;
 	border-radius: 25px;
+	display: block;
 }
 
 .a-post-detail {
