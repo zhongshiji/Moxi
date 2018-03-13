@@ -8,7 +8,7 @@
 				<el-input v-model="title" placeholder=" 请输入标题"></el-input>
 			</div>
 			<div class="input">
-				<el-input type="textarea" :autosize="{ minRows: 3, maxRows: 8}" placeholder="请输入内容" resize="none" v-model="content">
+				<el-input type="textarea" :autosize="{ minRows: 3, maxRows: 8}" placeholder="请输入简要内容" resize="none" v-model="content">
 				</el-input>
 			</div>
 			<div class="classify">
@@ -32,47 +32,48 @@ export default {
 	data() {
 		return {
 			nickname: '',
-			imageUrl: '',
+			headUrl: '',
 			title: '',
 			content: '',
 			options: [{
-				value: '选项1',
+				value: '热门',
 				label: '热门'
 			}, {
-				value: '选项2',
+				value: '明星',
 				label: '明星'
 			}, {
-				value: '选项3',
-				label: '头条'
+				value: '全球',
+				label: '全球'
 			}, {
-				value: '选项4',
+				value: '新鲜事',
 				label: '新鲜事'
 			}, {
-				value: '选项5',
+				value: '搞笑',
 				label: '搞笑'
 			}, {
-				value: '选项6',
+				value: '社会',
 				label: '社会'
 			}, {
-				value: '选项7',
+				value: '情感',
 				label: '情感'
 			}, {
-				value: '选项8',
+				value: '时尚',
 				label: '时尚'
 			}, {
-				value: '选项9',
+				value: '军事',
 				label: '军事'
 			}, {
-				value: '选项10',
+				value: '美女',
 				label: '美女'
 			}, {
-				value: '选项11',
+				value: '体育',
 				label: '体育'
 			}, {
-				value: '选项12',
+				value: '动漫',
 				label: '动漫'
 			}],
-			classify: []
+			classify: [],
+			markblog: '',
 		}
 	},
 	created () {
@@ -80,9 +81,9 @@ export default {
 		this.$http.get('api/users/userinfo')
 			.then(function(res) {
 				if (!res.data.nickname) {
-					_this.imageUrl = 'static/images/headshot.jpg';
+					_this.headUrl = 'static/images/headshot.jpg';
 				} else {
-					_this.imageUrl = res.data.imageUrl;
+					_this.headUrl = res.data.headUrl;
 					_this.nickname = res.data.nickname;
 				}
 			});
@@ -95,13 +96,13 @@ export default {
 			// console.log(this.classify.toString());
 			this.$http.post('/api/posts/create', {
 				nickname: this.nickname,
-				imageUrl: this.imageUrl,
+				headUrl: this.headUrl,
 				title: this.title,
 				content: this.content,
-				classify: this.classify.toString()
+				classify: this.classify.toString(),
+				markblog: this.markblog
 			}).then(function (res) {
 				location.reload()
-				console.log('hello')
 			})
 		}
 	}

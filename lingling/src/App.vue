@@ -24,6 +24,11 @@ export default {
 	font-size: 14px;
 }
 
+img {
+	display: block;
+	max-width: 620px;
+}
+
 h1 {
 	margin: 0;
 }

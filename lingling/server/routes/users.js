@@ -6,6 +6,8 @@ const router = express.Router();
 
 const UserModel = require('../models/users')
 const UserInfo = require('../models/userinfos')
+const PostModel = require('../models/posts')
+const CommentModel = require('../models/comments')
 const checkLogin = require('../middlewares/check').checkLogin
 const checkNotLogin = require('../middlewares/check').checkNotLogin
 
@@ -35,8 +37,6 @@ router.post('/signup', checkNotLogin, function(req, res, next) {
 		return res.send(e.message);
 	}
 
-	console.log(username, password);
-
 	//待写入数据库的用户信息
 	let user = {
 		username: username,
@@ -48,7 +48,7 @@ router.post('/signup', checkNotLogin, function(req, res, next) {
 		nickname: null,
 		gender: 'x',
 		email: null,
-		imageUrl: null,
+		headUrl: null,
 		introduction: null
 	}
 
@@ -135,6 +135,8 @@ router.post('/changeinfo', checkLogin, function(req, res, next) {
 	//用户信息写入数据库
 	UserInfo.update(userinfo.username, { 'nickname': userinfo.nickname, 'gender': userinfo.gender, 'email': userinfo.email, 'introduction': userinfo.introduction })
 		.then(function(result) {
+			PostModel.update(req.session.user.username, { 'nickname': userinfo.nickname })
+			CommentModel.update(req.session.user.username, { 'authornick': userinfo.nickname })
 			return res.json({ infoCode: 1 })
 		}).catch(function (e) {
 			console.log(e)
@@ -147,14 +149,16 @@ router.post('/upload', upload.single('avatarUpload'), function (req, res, next) 
 			throw err;
 			res.json({ state: 0, msg: '图片上传失败，请刷新重试' })
 		}
-		res.json({ state: 1, msg: '图片上传成功', imageUrl: "static/images/upload/" + req.file.originalname })
+		res.json({ state: 1, msg: '图片上传成功', headUrl: "static/images/upload/" + req.file.originalname })
 	})
 })
 
 router.post('/changeAvatar', function (req, res) {
-	UserInfo.update(req.session.user.username, { 'imageUrl': req.body.imageUrl })
+	UserInfo.update(req.session.user.username, { 'headUrl': req.body.headUrl })
 		.then(function (result) {
 			if (result.result.ok == 1 ) {
+				PostModel.update(req.session.user.username, { 'headUrl': req.body.headUrl })
+				CommentModel.update(req.session.user.username, { 'authorhead': req.body.headUrl })
 				res.json({ state: 1, msg: '图片上传成功' })
 			} else {
 				res.json({ state: 0, msg: '图片上传失败' })

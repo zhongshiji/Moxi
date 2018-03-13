@@ -1,18 +1,7 @@
 <template>
 	<div id="sidebar">
-		<div @click="remainstyle">
-			<el-button>热门</el-button>
-			<el-button>明星</el-button>
-			<el-button>头条</el-button>
-			<el-button>新鲜事</el-button>
-			<el-button>搞笑</el-button>
-			<el-button>社会</el-button>
-			<el-button>情感</el-button>
-			<el-button>时尚</el-button>
-			<el-button>军事</el-button>
-			<el-button>美女</el-button>
-			<el-button>体育</el-button>
-			<el-button>动漫</el-button>
+		<div>
+			<el-button v-for="item,index in classify" :key="index" @click="remainstyle(index)">{{ item.name }}</el-button>
 		</div>
 	</div>
 </template>
@@ -20,12 +9,26 @@
 export default {
 	data() {
 		return {
-
+			classify: [
+				{ name: '热门' },
+				{ name: '明星' },
+				{ name: '全球' },
+				{ name: '新鲜事' },
+				{ name: '搞笑' },
+				{ name: '社会' },
+				{ name: '情感' },
+				{ name: '时尚' },
+				{ name: '军事' },
+				{ name: '美女' },
+				{ name: '体育' },
+				{ name: '动漫' }
+			]
 		}
 	},
 	methods: {
-		remainstyle() {
-
+		remainstyle(index) {
+			let type = this.classify[index].name
+			console.log(type)
 		}
 	}
 }

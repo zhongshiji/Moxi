@@ -12,7 +12,7 @@
 					<div class="ll-headshot">
 						<el-form enctype="multipart/form-data" method="post">
 							<el-upload class="avatar-uploader" name="avatarUpload" action="api/users/upload" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
-								<img v-if="imageUrl" :src="imageUrl" class="avatar">
+								<img v-if="headUrl" :src="headUrl" class="avatar">
 								<i v-else class="el-icon-plus avatar-uploader-icon"></i>
 							</el-upload>
 						</el-form>
@@ -21,7 +21,7 @@
 						<el-form ref="form" :model="form" label-width="100px" enctype="multipart/form-data">
 							<!-- <el-form-item label="用户头像：">
 								<el-upload class="avatar-uploader" action="api/users/userinfo" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
-									<img v-if="imageUrl" :src="imageUrl" class="avatar">
+									<img v-if="headUrl" :src="headUrl" class="avatar">
 									<i v-else class="el-icon-plus avatar-uploader-icon"></i>
 								</el-upload>
 							</el-form-item> -->
@@ -56,7 +56,7 @@ import left from './left'
 export default {
 	data() {
 		return {
-			imageUrl: '',
+			headUrl: '',
 			form: {
 				nickname: '',
 				gender: '',
@@ -67,8 +67,6 @@ export default {
 	},
 	methods: {
 		onSubmit() {
-			console.log('submit!');
-			console.log(JSON.parse(localStorage.getItem('user')).username)
 			let _this = this;
 			this.$http.post('/api/users/changeinfo', {
 				username: JSON.parse(localStorage.getItem('user')).username,
@@ -79,11 +77,10 @@ export default {
 		},
 		handleAvatarSuccess(res, file) {
 			let _this = this;
-			console.log(res.imageUrl)
-			// this.imageUrl = URL.createObjectURL(file.raw);
-			this.imageUrl = res.imageUrl;
+			// this.headUrl = URL.createObjectURL(file.raw);
+			this.headUrl = res.headUrl;
 			this.$http.post('/api/users/changeAvatar', {
-				imageUrl: this.imageUrl
+				headUrl: this.headUrl
 			}).then(function (res) {
 				location.reload()
 			})
@@ -135,8 +132,6 @@ export default {
 	float: left;
 	width: 750px;
 }
-
-.rewrite {}
 
 .ll-form {
 	float: left;

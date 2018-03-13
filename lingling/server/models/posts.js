@@ -23,13 +23,18 @@ module.exports = {
 		return Post.create(post).exec()
 	},
 
+	//根据用户名更新文章
+	update: function update(username, data) {
+		return Post.update({ username: username }, { $set: data }, { upsert: false, multi: true }).exec()
+	},
+
 	//通过文章id获取一篇文章
 	getPostById: function getPostById (postId) {
 		return Post
 			.findOne({ _id: postId })
 			.populate({ path: 'author', model: 'User' })
 			.addCreatedAt()
-			.contentToHtml()
+			// .contentToHtml()
 			.exec()
 	},
 
@@ -44,7 +49,7 @@ module.exports = {
 			.populate({ path: 'author', model: 'User' })
 			.sort({ _id: -1 })
 			.addCreatedAt()
-			.contentToHtml()
+			// .contentToHtml()
 			.exec()
 	},
 

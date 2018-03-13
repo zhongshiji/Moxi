@@ -4,6 +4,8 @@ import home from '@/components/home'
 import lingling from '@/components/lingling'
 import changeinfo from '@/components/lingling/changeinfo'
 import usermain from '@/components/lingling/usermain'
+import blogview from '@/components/lingling/blogview'
+import blogedit from '@/components/lingling/blogedit'
 
 Vue.use(Router)
 
@@ -28,6 +30,16 @@ export default new Router({
       path: '/lingling/usermain',
       name: 'usermain',
       component: usermain
+    },
+    {
+      path: '/lingling/posts/:postId',
+      name: 'blogview',
+      component: blogview,
+    },
+    {
+      path: '/lingling/blogedit',
+      name: 'blogedit',
+      component: blogedit
     },
     {
       path: '*',

@@ -11,5 +11,5 @@ module.exports = function(app) {
 
 	app.use('/users', require('./users'));//用户注册、登录、登出
 	app.use('/posts', require('./posts'));//发表、修改、删除文章
-
+	app.use('/comments', require('./comments'));//发表、删除留言
 }

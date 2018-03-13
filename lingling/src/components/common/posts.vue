@@ -1,12 +1,12 @@
 <template>
 	<div id="posts">
-		<div class="a-post" v-for="post in posts">
+		<div class="a-post" v-for="post,index in posts" :key="post._id">
 			<div class="a-post-layout">
 				<div class="headshot">
-					<img :src="post.imageUrl" title="咘噜咘噜嘻哗哒" />
+					<img :src="post.headUrl" title="咘噜咘噜嘻哗哒" />
 				</div>
 				<div class="a-post-detail">
-					<div class="post-title">
+					<div class="post-title" @click="toBlogView(index)">
 						{{ post.nickname }}: {{ post.title }}
 					</div>
 					<div class="post-time">
@@ -28,6 +28,7 @@
 	</div>
 </template>
 <script>
+import marked from 'marked'
 export default {
 	data() {
 		return {
@@ -35,17 +36,21 @@ export default {
 		}
 	},
 	methods: {
-
+		toBlogView(index) {
+			this.$router.push({ path: `/lingling/posts/${this.posts[index]._id}` })
+		}
 	},
-	mounted () {
-		console.log(this.author)
+	mounted() {
 		let _this = this;
 		this.$http.get('/api/posts/', {
 			params: { author: this.author }
 		}).then(function(res) {
-				_this.posts = res.data;
-				console.log(_this.posts)
-			})
+			_this.posts = res.data;
+			// _this.posts.forEach(function (item, index) {
+			// 	return marked(item.content, { sanitize: true })
+			// })
+			// console.log(marked(_this.posts[0].content))
+		})
 	},
 	props: ['author']
 }
@@ -83,8 +88,14 @@ export default {
 
 .post-title {
 	color: #333;
+	cursor: pointer;
 	font-size: 18px;
 	font-weight: 700;
+}
+
+.post-title:hover {
+	font-size: 19px;
+	color: #2aa957;
 }
 
 .post-author {

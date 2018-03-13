@@ -3,13 +3,13 @@
 		<el-dropdown>
 			<el-button>
 				<div class="headshot">
-					<img :src="imageUrl" alt="咘噜咘噜嘻哗哒" />
+					<img :src="headUrl" alt="咘噜咘噜嘻哗哒" />
 				</div>
 				<i class="el-icon-caret-bottom el-icon--left"></i>
 			</el-button>
 			<el-dropdown-menu slot="dropdown">
 				<el-dropdown-item @click.native="toUserMain"><i class="icon-library el-icon--left"></i> 我的主页</el-dropdown-item>
-				<el-dropdown-item><i class="icon-quill el-icon--left"></i> 写博客</el-dropdown-item>
+				<el-dropdown-item @click.native="toBlogEdit"><i class="icon-quill el-icon--left"></i> 写博客</el-dropdown-item>
 				<el-dropdown-item @click.native="toChangeInfo"><i class="icon-cog el-icon--left"></i> 个人设置</el-dropdown-item>
 				<el-dropdown-item @click.native="logout"><i class="icon-switch el-icon--left"></i> 退出</el-dropdown-item>
 			</el-dropdown-menu>
@@ -20,17 +20,17 @@
 export default {
 	data() {
 		return {
-			imageUrl: ''
+			headUrl: ''
 		}
 	},
 	created() {
 		let _this = this;
 		this.$http.get('api/users/userinfo')
 			.then(function(res) {
-				if (!res.data.imageUrl) {
-					_this.imageUrl = 'static/images/headshot.jpg';
+				if (!res.data.headUrl) {
+					_this.headUrl = 'static/images/headshot.jpg';
 				} else {
-					_this.imageUrl = res.data.imageUrl;
+					_this.headUrl = res.data.headUrl;
 				}
 			})
 	},
@@ -56,6 +56,9 @@ export default {
 		},
 		toUserMain () {
 			this.$router.push('/lingling/usermain')
+		},
+		toBlogEdit () {
+			this.$router.push('/lingling/blogedit')
 		},
 		toChangeInfo () {
 			this.$router.push('/lingling/changeinfo')
