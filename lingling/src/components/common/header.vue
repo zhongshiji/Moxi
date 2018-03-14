@@ -19,7 +19,7 @@
 							<el-button type="text"><i class="icon-compass2 el-icon--left"></i>发现</el-button>
 						</li>
 						<li>
-							<el-button type="text"><i class="icon-play el-icon--left"></i>泠泠直播</el-button>
+							<el-button type="text"><i class="icon-play el-icon--left"></i>关于</el-button>
 						</li>
 						<li>
 							<el-button type="text"><i class="icon-steam el-icon--left"></i>游戏</el-button>

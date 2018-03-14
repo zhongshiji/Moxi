@@ -1,7 +1,7 @@
 <template>
 	<div id="left">
 		<div class="lingerinfo">
-			<lingerinfo></lingerinfo>
+			<lingerinfo :author="this.author"></lingerinfo>
 		</div>
 	</div>
 </template>
@@ -15,7 +15,10 @@ export default {
 	},
 	components: {
 		'lingerinfo': lingerinfo
-	}
+	},
+	props: [
+		'author'
+	]
 }
 
 </script>

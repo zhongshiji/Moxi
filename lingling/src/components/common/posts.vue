@@ -2,12 +2,12 @@
 	<div id="posts">
 		<div class="a-post" v-for="post,index in posts" :key="post._id">
 			<div class="a-post-layout">
-				<div class="headshot">
+				<div class="headshot" @click="toUserMain(index)">
 					<img :src="post.headUrl" title="咘噜咘噜嘻哗哒" />
 				</div>
 				<div class="a-post-detail">
 					<div class="post-title" @click="toBlogView(index)">
-						{{ post.nickname }}: {{ post.title }}
+						{{ post.nickname }}：{{ post.title }}
 					</div>
 					<div class="post-time">
 						{{ post.created_at }}
@@ -19,9 +19,9 @@
 			</div>
 			<div class="post-end">
 				<el-button-group>
-					<el-button icon="el-icon-edit">浏览</el-button>
-					<el-button icon="el-icon-share">留言</el-button>
-					<el-button icon="el-icon-delete">赞</el-button>
+					<el-button icon="el-icon-view">浏览 {{ post.pv }}</el-button>
+					<el-button icon="el-icon-edit-outline">评论 {{ post.commentsCount }}</el-button>
+					<el-button icon="el-icon-phone-outline">打call</el-button>
 				</el-button-group>
 			</div>
 		</div>
@@ -36,23 +36,49 @@ export default {
 		}
 	},
 	methods: {
-		toBlogView(index) {
-			this.$router.push({ path: `/lingling/posts/${this.posts[index]._id}` })
+		toBlogView (index) {
+			this.$router.push({ path: `/lingling/posts/${ this.posts[index]._id}` })
+		},
+		getPostId (index) {
+			return this.posts[index]._id
+		},
+		toUserMain (index) {
+			let _this = this;
+			if (!this.$store.state.user) {
+				_this.$notify({
+					title: '提醒',
+					message: '登录后才可以访问博主首页哦~',
+					type: 'warning',
+					position: 'bottom-right'
+				})
+				return
+			} else {
+				this.$router.push({ path: 'lingling/usermain', query: { author: this.posts[index].author._id, authorname: this.posts[index].author.username } })
+			}
 		}
 	},
-	mounted() {
+	created () {
 		let _this = this;
-		this.$http.get('/api/posts/', {
-			params: { author: this.author }
-		}).then(function(res) {
-			_this.posts = res.data;
-			// _this.posts.forEach(function (item, index) {
-			// 	return marked(item.content, { sanitize: true })
-			// })
-			// console.log(marked(_this.posts[0].content))
-		})
+
+		if (!this.$store.state.user && this.$route.params.type) {
+			this.$http.get('/api/posts/select', {
+				params: {
+					classify: this.$route.params.type
+				}
+			}).then(function(res) {
+				_this.posts = res.data
+			})
+		} else {
+			this.$http.get('/api/posts/', {
+				params: { author: this.author }
+			}).then(function(res) {
+				_this.posts = res.data;
+			})
+		}
 	},
-	props: ['author']
+	props: [
+		'author'
+	]
 }
 
 </script>
@@ -80,6 +106,7 @@ export default {
 	height: 50px;
 	border-radius: 25px;
 	display: block;
+	cursor: pointer;
 }
 
 .a-post-detail {

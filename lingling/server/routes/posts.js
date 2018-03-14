@@ -14,10 +14,22 @@ router.get('/', function (req, res, next) {
 
 router.get('/singlePost', function (req, res, next) {
 	const postId = req.query.postId
-	PostModel.getPostById(postId)
-		.then(function (post) {
-			console.log(post)
-			return res.send(post)
+
+	Promise.all([
+		PostModel.getPostById(postId),
+		PostModel.incPv(postId)
+	]).then(function (post) {
+			console.log(post[0])
+			return res.send(post[0])
+		}).catch(next)
+})
+
+router.get('/select', function (req, res, next) {
+	const classify = req.query.classify
+	console.log(classify)
+	PostModel.getPostsByClassify(classify)
+		.then(function (posts) {
+			return res.send(posts)
 		})
 })
 
@@ -25,6 +37,7 @@ router.get('/singlePost', function (req, res, next) {
 router.post('/create', checkLogin, function (req, res, next) {
 	const author = req.session.user._id
 	const username = req.session.user.username
+	console.log(typeof username, username)
 	const nickname = req.body.nickname
 	const title = req.body.title
 	const headUrl = req.body.headUrl
@@ -47,11 +60,11 @@ router.post('/create', checkLogin, function (req, res, next) {
 		.then(function (result) {
 			console.log(result);
 			console.log('发表成功');
-			return res.json({ postCode: 1 })
+			return res.json({ postCode: 1, msg: "发表成功" })
 		})
 		.catch(function (e) {
 			console.log(e)
-			return res.json({ postCode: 0 })
+			return res.json({ postCode: 0, msg: "发表失败，请重试" })
 		})
 })
 

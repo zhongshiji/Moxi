@@ -36,47 +36,47 @@ export default {
 			title: '',
 			content: '',
 			options: [{
-				value: '热门',
+				value: 'Hots',
 				label: '热门'
 			}, {
-				value: '明星',
+				value: 'Stars',
 				label: '明星'
 			}, {
-				value: '全球',
+				value: 'World',
 				label: '全球'
 			}, {
-				value: '新鲜事',
+				value: 'News',
 				label: '新鲜事'
 			}, {
-				value: '搞笑',
+				value: 'Amuse',
 				label: '搞笑'
 			}, {
-				value: '社会',
+				value: 'Society',
 				label: '社会'
 			}, {
-				value: '情感',
+				value: 'Emotions',
 				label: '情感'
 			}, {
-				value: '时尚',
+				value: 'Fashions',
 				label: '时尚'
 			}, {
-				value: '军事',
+				value: 'Military',
 				label: '军事'
 			}, {
-				value: '美女',
+				value: 'Beauty',
 				label: '美女'
 			}, {
-				value: '体育',
+				value: 'Sports',
 				label: '体育'
 			}, {
-				value: '动漫',
+				value: 'Anime',
 				label: '动漫'
 			}],
 			classify: [],
 			markblog: '',
 		}
 	},
-	created () {
+	created() {
 		let _this = this;
 		this.$http.get('api/users/userinfo')
 			.then(function(res) {
@@ -89,11 +89,29 @@ export default {
 			});
 	},
 	methods: {
-		createPost () {
+		createPost() {
 			let _this = this;
-			// console.log(this.title);
-			// console.log(this.content);
-			// console.log(this.classify.toString());
+
+			if(!this.nickname) {
+				_this.$notify({
+					title: '失败',
+					message: '填写个人信息后才可以发表简博哦~',
+					type: 'error',
+					position: 'bottom-right'
+				})
+				return
+			}
+
+			if (!this.title) {
+				_this.$notify({
+					title: '失败',
+					message: '标题不能为空',
+					type: 'error',
+					position: 'bottom-right'
+				})
+				return
+			}
+
 			this.$http.post('/api/posts/create', {
 				nickname: this.nickname,
 				headUrl: this.headUrl,
@@ -101,8 +119,25 @@ export default {
 				content: this.content,
 				classify: this.classify.toString(),
 				markblog: this.markblog
-			}).then(function (res) {
-				location.reload()
+			}).then(function(res) {
+				if (res.data.postCode === 1) {
+					_this.$notify({
+						title: '成功',
+						message: res.data.msg,
+						type: 'success',
+						position: 'bottom-right'
+					})
+					setTimeout(function() {
+						location.reload()
+					}, 500)
+				} else {
+					_this.$notify({
+						title: '错误',
+						message: res.data.msg,
+						type: 'error',
+						position: 'bottom-right'
+					})
+				}
 			})
 		}
 	}
@@ -131,7 +166,7 @@ export default {
 	border-color: #ccc;
 	border-style: solid;
 	border-width: 1px;
-	box-shadow: 0px 0px 3px 0px rgba(0,0,0,0.15) inset;
+	box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.15) inset;
 }
 
 .classify {

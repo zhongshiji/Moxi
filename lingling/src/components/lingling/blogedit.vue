@@ -81,40 +81,40 @@ export default {
 			title: '',
 			tinyblog: '',
 			options: [{
-				value: '热门',
+				value: 'Hots',
 				label: '热门'
 			}, {
-				value: '明星',
+				value: 'Stars',
 				label: '明星'
 			}, {
-				value: '全球',
+				value: 'World',
 				label: '全球'
 			}, {
-				value: '新鲜事',
+				value: 'News',
 				label: '新鲜事'
 			}, {
-				value: '搞笑',
+				value: 'Amuse',
 				label: '搞笑'
 			}, {
-				value: '社会',
+				value: 'Society',
 				label: '社会'
 			}, {
-				value: '情感',
+				value: 'Emotions',
 				label: '情感'
 			}, {
-				value: '时尚',
+				value: 'Fashions',
 				label: '时尚'
 			}, {
-				value: '军事',
+				value: 'Militart',
 				label: '军事'
 			}, {
-				value: '美女',
+				value: 'Beauty',
 				label: '美女'
 			}, {
-				value: '体育',
+				value: 'Sports',
 				label: '体育'
 			}, {
-				value: '动漫',
+				value: 'Anime',
 				label: '动漫'
 			}],
 			classify: [],
@@ -182,7 +182,24 @@ export default {
 				classify: this.classify.toString(),
 				markblog: this.markblog
 			}).then(function (res) {
-				_this.$router.push('/lingling')
+				if (res.data.postCode === 1) {
+					_this.$notify({
+						title: '成功',
+						message: res.data.msg,
+						type: 'success',
+						position: 'bottom-right'
+					})
+					setTimeout(function() {
+						_this.$router.push('/lingling')
+					}, 500)
+				} else {
+					_this.$notify({
+						title: '错误',
+						message: res.data.msg,
+						type: 'error',
+						position: 'bottom-right'
+					})
+				}
 			})
 		}
 	}

@@ -25,10 +25,12 @@ router.post('/signup', checkNotLogin, function(req, res, next) {
 	const username = req.body.username
 	let password = req.body.password
 
+	const myReg=/^[a-zA-Z0-9_-]+@([a-zA-Z0-9]+\.)+(com|cn|net|org)$/;
+
 	//校验参数
 	try {
-		if (!(username.length >= 1 && username.length <= 12)) {
-			throw new Error('用户名请限制在 1-12 个字符')
+		if (!myReg.test(username)) {
+			throw new Error('邮箱格式不对')
 		}
 		if (password.length < 6) {
 			throw new Error('密码至少 6 个字符')
@@ -63,7 +65,7 @@ router.post('/signup', checkNotLogin, function(req, res, next) {
 		})
 		.catch(function(e) {
 			if (e.message.match('duplicate key')) {
-				console.log('用户注册的账号已被占用')
+				console.log('用户注册的邮箱已被占用')
 				return res.json({ signupcode: 0 })
 			}
 			next(e)
@@ -111,6 +113,14 @@ router.get('/signout', checkLogin, function(req, res, next) {
 
 router.get('/userinfo', function (req, res, next) {
 	UserInfo.getUserInfoByName(req.session.user.username)
+		.then(function (UserInfo) {
+			res.send(UserInfo)
+		})
+})
+
+router.get('/userinfoB', function (req, res, next) {
+	const username = req.query.username
+	UserInfo.getUserInfoByName(username)
 		.then(function (UserInfo) {
 			res.send(UserInfo)
 		})

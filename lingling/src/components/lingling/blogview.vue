@@ -85,30 +85,41 @@ export default {
 		},
 		handleSubmit() {
 			let _this = this;
+
+			if (!this.content) {
+				_this.$notify({
+						title: '失败',
+						message: '评论内容不能为空',
+						type: 'error',
+						position: 'bottom-right'
+					})
+				return
+			}
+
 			this.$http.post('/api/comments/create', {
 				content: this.content,
 				postId: this.postId,
 				authorhead: this.headUrl,
 				authornick: this.userinfo.nickname
 			}).then(function(res) {
-				if (res.data.state ===1 ) {
+				if (res.data.state === 1) {
 					_this.$notify({
-          title: '成功',
-          message: res.data.msg,
-          type: 'success',
-          position: 'bottom-right'
-        })
+						title: '成功',
+						message: res.data.msg,
+						type: 'success',
+						position: 'bottom-right'
+					})
+					setTimeout(function() {
+						location.reload()
+					}, 500)
 				} else {
 					_this.$notify({
-          title: '错误',
-          message: res.data.msg,
-          type: 'error',
-          position: 'bottom-right'
-				})
+						title: '错误',
+						message: res.data.msg,
+						type: 'error',
+						position: 'bottom-right'
+					})
 				}
-				setTimeout(function () {
-					location.reload()
-				}, 500)
 			})
 		}
 	},

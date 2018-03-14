@@ -5,7 +5,7 @@
 				<div class="content">
 					<el-button class="loginTab" :class="{ activeStyle: ifLogintab }" type="text" @click="isLogintab">帐号登陆</el-button>
 					<el-button class="regisTab justified-margin" :class="{ activeStyle: ifRegisTab }" type="text" @click="isRegisTab">安全注册</el-button>
-					<el-input placeholder="请输入账号" prefix-icon="icon-user el-icon--left" v-model="username" size="small">
+					<el-input placeholder="请输入邮箱账号" prefix-icon="icon-user el-icon--left" v-model="username" size="small">
 					</el-input>
 					<br>
 					<br>

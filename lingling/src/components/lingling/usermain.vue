@@ -2,11 +2,11 @@
 	<div id="changeinfo">
 		<div class="LL-layout">
 			<div class="LL-left">
-				<left></left>
+				<left :author="this.authorname"></left>
 			</div>
 			<div class="main-layout">
 				<div class="LL-posts">
-					<posts :author="this.author"></posts>
+					<posts :author="this.author" class="posts-style"></posts>
 				</div>
 			</div>
 		</div>
@@ -18,11 +18,18 @@ import posts from '../common/posts'
 export default {
 	data() {
 		return {
-			author: JSON.parse(localStorage.getItem('userDetail'))._id
+			author: JSON.parse(localStorage.getItem('userDetail'))._id,
+			authorname: ''
 		}
 	},
 	methods: {
 		
+	},
+	created () {
+    if (this.$route.query.author) {
+			this.author = this.$route.query.author
+			this.authorname = this.$route.query.authorname
+		}
 	},
 	components: {
 		'left': left,
@@ -62,5 +69,9 @@ export default {
 
 .LL-posts {
 	width: 600px;
+}
+
+.posts-style {
+	margin-top: 0 !important;
 }
 </style>

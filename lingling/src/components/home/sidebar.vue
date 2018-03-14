@@ -10,25 +10,30 @@ export default {
 	data() {
 		return {
 			classify: [
-				{ name: '热门' },
-				{ name: '明星' },
-				{ name: '全球' },
-				{ name: '新鲜事' },
-				{ name: '搞笑' },
-				{ name: '社会' },
-				{ name: '情感' },
-				{ name: '时尚' },
-				{ name: '军事' },
-				{ name: '美女' },
-				{ name: '体育' },
-				{ name: '动漫' }
+				{ name: '热门', value: 'Hots' },
+				{ name: '明星', value: 'Stars' },
+				{ name: '全球', value: 'World' },
+				{ name: '新鲜事', value: 'News' },
+				{ name: '搞笑', value: 'Amuse' },
+				{ name: '社会', value: 'Society' },
+				{ name: '情感', value: 'Emotions' },
+				{ name: '时尚', value: 'Fashions' },
+				{ name: '军事', value: 'Military' },
+				{ name: '美女', value: 'Beauty' },
+				{ name: '体育', value: 'Sports' },
+				{ name: '动漫', value: 'Anime' }
 			]
 		}
 	},
 	methods: {
 		remainstyle(index) {
-			let type = this.classify[index].name
-			console.log(type)
+			let type = this.classify[index].value
+			if (type == 'Hots') {
+				this.$router.push('/')
+				return
+			}
+			location.reload()
+			this.$router.push(`/home/${ type }`)
 		}
 	}
 }

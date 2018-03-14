@@ -68,6 +68,44 @@ export default {
 	methods: {
 		onSubmit() {
 			let _this = this;
+
+			if (!this.form.nickname) {
+				_this.$notify({
+					title: '提醒',
+					message: '昵称不能为空',
+					type: 'warning',
+					position: 'bottom-right'
+				})
+				return
+			}
+			if (!this.form.gender) {
+				_this.$notify({
+					title: '提醒',
+					message: '性别不能为空',
+					type: 'warning',
+					position: 'bottom-right'
+				})
+				return
+			}
+			if (!this.form.email) {
+				_this.$notify({
+					title: '提醒',
+					message: '邮箱不能为空',
+					type: 'warning',
+					position: 'bottom-right'
+				})
+				return
+			}
+			if (!this.form.introduction) {
+				_this.$notify({
+					title: '提醒',
+					message: '个人简介不能为空',
+					type: 'warning',
+					position: 'bottom-right'
+				})
+				return
+			}
+
 			this.$http.post('/api/users/changeinfo', {
 				username: JSON.parse(localStorage.getItem('user')).username,
 				form: _this.form

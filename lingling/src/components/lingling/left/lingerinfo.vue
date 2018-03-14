@@ -33,6 +33,28 @@ export default {
 	},
 	created() {
 		let _this = this;
+		if (this.author) {
+			this.$http.get('api/users/userinfoB', {
+				params: {
+					username: this.author
+				}
+			}).then(function(res) {
+				if (!res.data.nickname) {
+					_this.nickname.nick = '泠泠用户';
+					_this.email = '点击用户名填写email信息';
+					_this.introduction = '这个人很懒，什么都没有留下。';
+					_this.headUrl = 'static/images/headshot.jpg';
+				} else {
+					_this.nickname.nick = res.data.nickname;
+					_this.nickname.user = res.data.username;
+					_this.email = res.data.email;
+					_this.headUrl = res.data.headUrl;
+					_this.introduction = res.data.introduction;
+				}
+			})
+			return
+		}
+
 		this.$http.get('api/users/userinfo')
 			.then(function(res) {
 				if (!res.data.nickname) {
@@ -56,13 +78,16 @@ export default {
 			})
 	},
 	methods: {
-		toUserMain () {
+		toUserMain() {
 			this.$router.push('/lingling/usermain')
 		},
-		toChangeInfo () {
+		toChangeInfo() {
 			this.$router.push('/lingling/changeinfo')
 		}
-	}
+	},
+	props: [
+		'author'
+	]
 }
 
 </script>
