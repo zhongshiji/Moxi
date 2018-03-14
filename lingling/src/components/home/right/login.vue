@@ -9,7 +9,7 @@
 					</el-input>
 					<br>
 					<br>
-					<el-input placeholder="请输入密码" prefix-icon="icon-quill el-icon--left" v-model="password" size="small">
+					<el-input placeholder="请输入密码" type="password" prefix-icon="icon-quill el-icon--left" v-model="password" size="small">
 					</el-input>
 					<br>
 					<br>

@@ -20,8 +20,8 @@
 			<div class="post-end">
 				<el-button-group>
 					<el-button icon="el-icon-view">浏览 {{ post.pv }}</el-button>
-					<el-button icon="el-icon-edit-outline">评论 {{ post.commentsCount }}</el-button>
-					<el-button icon="el-icon-phone-outline">打call</el-button>
+					<el-button icon="el-icon-edit-outline" @click="toBlogView(index)">评论 {{ post.commentsCount }}</el-button>
+					<el-button icon="icon-heart" @click="playcall(index)"> 喜欢 {{ post.callsCount }}</el-button>
 				</el-button-group>
 			</div>
 		</div>
@@ -32,17 +32,18 @@ import marked from 'marked'
 export default {
 	data() {
 		return {
-			posts: []
+			posts: [],
+			calls: []
 		}
 	},
 	methods: {
-		toBlogView (index) {
+		toBlogView(index) {
 			this.$router.push({ path: `/lingling/posts/${ this.posts[index]._id}` })
 		},
-		getPostId (index) {
+		getPostId(index) {
 			return this.posts[index]._id
 		},
-		toUserMain (index) {
+		toUserMain(index) {
 			let _this = this;
 			if (!this.$store.state.user) {
 				_this.$notify({
@@ -55,11 +56,54 @@ export default {
 			} else {
 				this.$router.push({ path: 'lingling/usermain', query: { author: this.posts[index].author._id, authorname: this.posts[index].author.username } })
 			}
+		},
+		playcall(index) {
+			let _this = this;
+
+			if (!this.$store.state.user) {
+				_this.$notify({
+					title: '错误',
+					message: '登录后才能打call哦~',
+					type: 'error',
+					position: 'bottom-right'
+				})
+				return
+			}
+			
+			_this.$http.get('/api/calls/', {
+				params: { postId: _this.posts[index]._id }
+			}).then(function(res) {
+				if (res.data[0]) {
+					if (res.data[0].username.indexOf(JSON.parse(_this.$store.state.user).username) != -1) {
+						_this.$notify({
+							title: '提醒',
+							message: '您已经打过call了~',
+							type: 'warning',
+							position: 'bottom-right'
+						})
+					} else {
+						_this.$http.post('api/calls/addPost', {
+							postId: _this.posts[index]._id
+						}).then(function(res) {
+							_this.posts[index].callsCount += 1;
+						})
+					}
+				} else {
+					_this.$http.post('api/calls/addPost', {
+						postId: _this.posts[index]._id
+					}).then(function(res) {
+						_this.posts[index].callsCount += 1;
+					})
+				}
+			})
 		}
 	},
-	created () {
+	created() {
 		let _this = this;
-
+		const calls = _this.$http.get('/api/calls/all')
+			.then(function(res) {
+				return res.data
+			})
 		if (!this.$store.state.user && this.$route.params.type) {
 			this.$http.get('/api/posts/select', {
 				params: {
@@ -69,12 +113,29 @@ export default {
 				_this.posts = res.data
 			})
 		} else {
-			this.$http.get('/api/posts/', {
+			const posts = this.$http.get('/api/posts/', {
 				params: { author: this.author }
-			}).then(function(res) {
-				_this.posts = res.data;
+			}).then((res) => {
+				return res.data;
+			});
+
+			Promise.all([posts, calls]).then((result) => {
+				console.log(result);
+				console.log(result[0][0].author._id)
+				console.log(result[1][0].username.length)
+				for (var i = 0; i < result[0].length; i++) {
+					for (var j = 0; j < result[1].length; j++) {
+						if (result[0][i]._id == result[1][j].postId) {
+							result[0][i].callsCount = result[1][j].username.length
+						}
+					}
+				}
+				this.posts = result[0];
+				console.log(result[0])
 			})
 		}
+
+
 	},
 	props: [
 		'author'

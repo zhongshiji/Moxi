@@ -5,7 +5,7 @@
 				<div class="logo grid-content" @click="tohome"></div>
 			</el-col>
 			<el-col :span="8" :offset="1">
-				<el-input placeholder="搜索博客、找人" v-model="search" size="small">
+				<el-input placeholder="搜索博客" v-model="search" size="small">
 					<i slot="suffix" class="el-input__icon el-icon-search"></i>
 				</el-input>
 			</el-col>

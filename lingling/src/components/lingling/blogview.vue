@@ -17,6 +17,12 @@
 				</div>
 				<div class="show-content" v-html="compiledMarkdown()"></div>
 			</div>
+			<div class="meta-bottom">
+				<div class="call">
+					<el-button round icon="icon-heart" @click="playcall"> 喜欢 | {{ this.callsCount }}
+					</el-button>
+				</div>
+			</div>
 			<div class="new-comment">
 				<div class="head">
 					<img :src="this.headUrl">
@@ -76,23 +82,66 @@ export default {
 			headUrl: 'static/images/avatar.png',
 			content: '',
 			comments: [],
-			commentsCount: 0
+			commentsCount: 0,
+			callsCount: 0
 		}
 	},
 	methods: {
 		compiledMarkdown: function() {
 			return marked(this.post.markblog || '', { sanitize: true })
 		},
+		playcall() {
+			let _this = this;
+
+			if (!this.$store.state.user) {
+				_this.$notify({
+					title: '错误',
+					message: '登录后才能打call哦~',
+					type: 'error',
+					position: 'bottom-right'
+				})
+				return
+			}
+
+			_this.$http.get('/api/calls/', {
+				params: { postId: _this.$route.params.postId }
+			}).then(function(res) {
+				if (res.data[0]) {
+					if (res.data[0].username.indexOf(JSON.parse(_this.$store.state.user).username) != -1) {
+						_this.$notify({
+							title: '提醒',
+							message: '您已经打过call了~',
+							type: 'warning',
+							position: 'bottom-right'
+						})
+					} else {
+						_this.$http.post('api/calls/addPost', {
+							postId: _this.$route.params.postId
+						}).then(function(res) {
+							_this.callsCount += 1;
+							console.log(res)
+						})
+					}
+				} else {
+					_this.$http.post('api/calls/addPost', {
+						postId: _this.$route.params.postId
+					}).then(function(res) {
+						console.log(res)
+					})
+				}
+			})
+			
+		},
 		handleSubmit() {
 			let _this = this;
 
 			if (!this.content) {
 				_this.$notify({
-						title: '失败',
-						message: '评论内容不能为空',
-						type: 'error',
-						position: 'bottom-right'
-					})
+					title: '失败',
+					message: '评论内容不能为空',
+					type: 'error',
+					position: 'bottom-right'
+				})
 				return
 			}
 
@@ -148,7 +197,7 @@ export default {
 			}
 		}).then(function(res) {
 			_this.comments = res.data
-			console.log(_this.comments)
+			// console.log(_this.comments)
 		})
 
 		this.$http.get('/api/comments/getCommentsCount', {
@@ -158,6 +207,16 @@ export default {
 		}).then(function(res) {
 			_this.commentsCount = res.data.commentsCount
 		})
+
+		this.$http.get('api/calls/', {
+				params: { postId: this.$route.params.postId }
+			}).then(function (res) {
+				if (res.data[0]) {
+					_this.callsCount = res.data[0].username.length
+				} else {
+					_this.callsCount = 0
+				}
+			})
 	}
 }
 
@@ -242,6 +301,23 @@ img {
 
 .tinyblog {
 	margin-bottom: 45px;
+}
+
+.view-layout .meta-bottom {
+	margin-top: 40px;
+	margin-bottom: 80px;
+}
+
+.call {
+	display: inline-block;
+}
+
+.call .el-button {
+	border: 1px solid #EA6F5A;
+	border-radius: 40px;
+	padding: 18px 30px;
+	font-size: 20px;
+	color: #EA6F5A;
 }
 
 .view-layout .article .show-content {

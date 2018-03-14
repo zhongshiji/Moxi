@@ -19,7 +19,7 @@ router.get('/singlePost', function (req, res, next) {
 		PostModel.getPostById(postId),
 		PostModel.incPv(postId)
 	]).then(function (post) {
-			console.log(post[0])
+			// console.log(post[0])
 			return res.send(post[0])
 		}).catch(next)
 })

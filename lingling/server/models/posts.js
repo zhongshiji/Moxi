@@ -1,6 +1,7 @@
 const marked = require('marked')
 const Post = require('../lib/mongo').Post
-var CommentModel = require('./comments');
+const CommentModel = require('./comments')
+const	CallModel = require('./calls')
 
 // 给 post 添加留言数 commentsCount
 Post.plugin('addCommentsCount', {
