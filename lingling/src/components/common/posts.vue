@@ -100,17 +100,34 @@ export default {
 	},
 	created() {
 		let _this = this;
+		//获取所有❤喜欢
 		const calls = _this.$http.get('/api/calls/all')
 			.then(function(res) {
 				return res.data
 			})
+		//如果点击了某个特定类别（分类）...
 		if (!this.$store.state.user && this.$route.params.type) {
-			this.$http.get('/api/posts/select', {
+			const posts = this.$http.get('/api/posts/select', {
 				params: {
 					classify: this.$route.params.type
 				}
 			}).then(function(res) {
-				_this.posts = res.data
+				return res.data;
+			})
+
+			Promise.all([posts, calls]).then((result) => {
+				// console.log(result);
+				// console.log(result[0][0].author._id)
+				// console.log(result[1][0].username.length)
+				for (var i = 0; i < result[0].length; i++) {
+					for (var j = 0; j < result[1].length; j++) {
+						if (result[0][i]._id == result[1][j].postId) {
+							result[0][i].callsCount = result[1][j].username.length
+						}
+					}
+				}
+				this.posts = result[0];
+				console.log(result[0])
 			})
 		} else {
 			const posts = this.$http.get('/api/posts/', {
@@ -120,9 +137,9 @@ export default {
 			});
 
 			Promise.all([posts, calls]).then((result) => {
-				console.log(result);
-				console.log(result[0][0].author._id)
-				console.log(result[1][0].username.length)
+				// console.log(result);
+				// console.log(result[0][0].author._id)
+				// console.log(result[1][0].username.length)
 				for (var i = 0; i < result[0].length; i++) {
 					for (var j = 0; j < result[1].length; j++) {
 						if (result[0][i]._id == result[1][j].postId) {

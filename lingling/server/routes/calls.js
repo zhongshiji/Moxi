@@ -17,7 +17,7 @@ router.get('/', function (req, res, next) {
 	console.log(postId)
 	CallModel.getCallByPostId(postId)
 		.then(function (result) {
-			console.log(result)
+			// console.log(result)
 			res.send(result)
 		})
 })
@@ -36,7 +36,7 @@ router.post('/addPost', function (req, res, next) {
 
 	CallModel.update(postId, { 'username': username })
 		.then(function (result) {
-			console.log(result)
+			// console.log(result)
 			if(result.result.ok == 1) {
 				return res.json({ state: 1, msg: '打call成功' })
 			}

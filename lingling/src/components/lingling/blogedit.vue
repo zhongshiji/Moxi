@@ -70,6 +70,7 @@
 	</div>
 </template>
 <script>
+// import Bus from '../../eventBus/bus'
 import _ from 'lodash'
 import marked from 'marked'
 import hightlight from 'highlight.js'
@@ -128,6 +129,7 @@ export default {
 	},
 	created () {
 		let _this = this;
+
 		this.$http.get('api/users/userinfo')
 			.then(function(res) {
 				if (!res.data.nickname) {
@@ -137,6 +139,15 @@ export default {
 					_this.nickname = res.data.nickname;
 				}
 			});
+
+
+		this.title = this.$route.params.title
+		this.tinyblog = this.$route.params.content
+		this.classify = this.$route.params.classify
+
+		// Bus.$on('getTarget', target => {
+		// 	console.log(target);
+		// });
 	},
 	methods: {
 		update: _.debounce(function(e) {

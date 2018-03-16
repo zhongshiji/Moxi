@@ -19,7 +19,7 @@
 				</el-select>
 			</div>
 			<div class="ll-button">
-				<el-button type="primary">生成博客</el-button>
+				<el-button type="primary" @click="toBlogView">生成博客</el-button>
 				<el-button type="success" @click="createPost">发布简博</el-button>
 			</div>
 			<div class="clear">
@@ -28,6 +28,7 @@
 	</div>
 </template>
 <script>
+// import Bus from '../../eventBus/bus'
 export default {
 	data() {
 		return {
@@ -139,6 +140,10 @@ export default {
 					})
 				}
 			})
+		},
+		toBlogView() {
+			this.$router.push({ name: 'blogedit', params: { title: this.title, content: this.content, classify: this.classify } })
+			// Bus.$emit('getTarget', this.title)
 		}
 	}
 }
