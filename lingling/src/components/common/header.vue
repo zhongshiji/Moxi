@@ -124,7 +124,7 @@ ul {
 	top: 0;
 	left: 0;
 	/*background-color: #fff;*/
-	background-color: rgba(54, 128, 94, 0.94);
+	background-color: rgba(54, 128, 94, 0.81);
 	color: #444;
 	text-align: center;
 	line-height: 54px;
