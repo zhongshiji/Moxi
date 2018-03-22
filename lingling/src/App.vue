@@ -24,7 +24,7 @@ export default {
 	font-size: 14px;
 }
 
-img {
+.show-content img {
 	display: block;
 	max-width: 620px;
 }
@@ -40,4 +40,23 @@ h1 {
 .el-textarea__inner {
 	border: none;
 }
+
+.el-upload--picture-card {
+	width: 80px;
+	height: 80px;
+	line-height: 90px;
+}
+
+.el-upload-list--picture-card .el-upload-list__item {
+	width: 82px;
+	height: 82px;
+}
+
+.v-modal {
+	z-index: 1000 !important;
+}
+
+.hiddenIcon .el-upload--picture-card {
+	display: none;
+} 
 </style>

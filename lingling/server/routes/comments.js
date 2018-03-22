@@ -56,4 +56,16 @@ router.get('/getCommentsCount', function (req, res, next) {
 		})
 })
 
+router.post('/deleteComment', function (req, res, next) {
+	const commentId = req.body.commentId
+	CommentModel.delCommentById(commentId)
+		.then((result) => {
+			if (result.result.ok = 1) {
+				res.json({ state: 1, msg: '评论删除成功' })
+			} else {
+				res.json({ state: 0, msg: '删除失败，请重试' })
+			}
+		})
+})
+
 module.exports = router;

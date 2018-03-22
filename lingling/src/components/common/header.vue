@@ -5,8 +5,8 @@
 				<div class="logo grid-content" @click="tohome"></div>
 			</el-col>
 			<el-col :span="8" :offset="1">
-				<el-input placeholder="搜索博客" v-model="search" size="small">
-					<i slot="suffix" class="el-input__icon el-icon-search"></i>
+				<el-input placeholder="搜索博客" v-model="search" size="small" @keyup.enter.native="toSearchPage">
+					<i slot="suffix" class="el-input__icon el-icon-search" @click="toSearchPage"></i>
 				</el-input>
 			</el-col>
 			<el-col :span="8" :offset="1">
@@ -16,13 +16,32 @@
 							<el-button type="text" @click="tohome"><i class="icon-home1 el-icon--left"></i>首页</el-button>
 						</li>
 						<li>
-							<el-button type="text"><i class="icon-compass2 el-icon--left"></i>发现</el-button>
+							<el-button type="text" @click="toOther"><i class="icon-book el-icon--left"></i>资料</el-button>
 						</li>
 						<li>
-							<el-button type="text"><i class="icon-play el-icon--left"></i>关于</el-button>
+							<el-button type="text" @click="showFeedBack"><i class="icon-phone el-icon--left"></i>反馈</el-button>
+							<el-dialog title="反馈" :visible.sync="visible" width="30%">
+								<el-input placeholder="请输入邮箱账号" prefix-icon="icon-user el-icon--left" v-model="email" size="small">
+								</el-input>
+								<br>
+								<br>
+								<div class="border">
+									<el-input type="textarea" :autosize="{ minRows: 2, maxRows: 8 }" placeholder="请输入亟待改善的问题" v-model="questions">
+									</el-input>
+								</div>
+								<br>
+								<div class="border">
+									<el-input type="textarea" :autosize="{ minRows: 2, maxRows: 8 }" placeholder="请输入改善的建议" v-model="suggestions">
+									</el-input>
+								</div>
+								<span slot="footer" class="dialog-footer">
+    							<el-button @click="visible = false">取 消</el-button>
+    							<el-button type="primary" @click="postFeedBack">提 交</el-button>
+  							</span>
+							</el-dialog>
 						</li>
 						<li>
-							<el-button type="text"><i class="icon-steam el-icon--left"></i>游戏</el-button>
+							<el-button type="text" @click="toAbout"><i class="icon-steam el-icon--left"></i>关于</el-button>
 						</li>
 					</ul>
 				</div>
@@ -40,7 +59,11 @@ import haveloggedin from './head/haveloggedin'
 export default {
 	data() {
 		return {
-			search: ''
+			email: '',
+			search: '',
+			questions: '',
+			suggestions: '',
+			visible: false
 		}
 	},
 	components: {
@@ -51,13 +74,84 @@ export default {
 		tohome() {
 			let _this = this;
 			this.$http.get('/api/')
-				.then(function (res) {
-					if(res.data.checkCode == 1) {
+				.then(function(res) {
+					if (res.data.checkCode == 1) {
 						_this.$router.push('/lingling');
 					} else {
 						_this.$router.push('/');
 					}
 				})
+		},
+		toSearchPage() {
+			location.reload()
+			this.$router.push({ path: `/search/${ this.search }` })
+		},
+		toFindMore() {
+			this.$message({
+				showClose: true,
+				message: '敬请期待~',
+				type: 'warning'
+			});
+		},
+		toOther() {
+			this.$router.push('/markdownUsage')
+		},
+		toAbout() {
+			this.$router.push('/about')
+		},
+		showFeedBack() {
+			this.email = '';
+			this.questions = '';
+			this.suggestions = '';
+			this.visible = true;
+		},
+		postFeedBack() {
+			this.visible = false;
+
+			if (!this.email) {
+        this.$notify({
+          title: '提醒',
+          message: '请输入邮箱地址',
+          type: 'warning',
+          position: 'bottom-right'
+        })
+        return
+      }
+
+      if (!this.questions && !this.suggestions) {
+        this.$notify({
+          title: '提醒',
+          message: '请输入问题或建议',
+          type: 'warning',
+          position: 'bottom-right'
+        })
+        return
+      }
+
+			this.$http.post('api/posts/postFeedBack', {
+				email: this.email,
+				questions: this.questions,
+				suggestions: this.suggestions
+			}).then((res) => {
+				if (res.data.state === 1) {
+					this.$notify({
+						title: '成功',
+						message: res.data.msg,
+						type: 'success',
+						position: 'bottom-right'
+					})
+					setTimeout(function() {
+						location.reload()
+					}, 500)
+				} else {
+					this.$notify({
+						title: '错误',
+						message: res.data.msg,
+						type: 'error',
+						position: 'bottom-right'
+					})
+				}
+			})
 		}
 	},
 	computed: {
@@ -124,11 +218,11 @@ ul {
 	top: 0;
 	left: 0;
 	/*background-color: #fff;*/
-	background-color: rgba(54, 128, 94, 0.81);
+	background-color: rgba(54, 128, 94, 0.75);
 	color: #444;
 	text-align: center;
 	line-height: 54px;
-	z-index: 9999;
+	z-index: 1001;
 }
 
 .el-row {
@@ -157,6 +251,11 @@ ul {
 .row-bg {
 	padding: 10px 0;
 	background-color: #f9fafc;
+}
+
+.border {
+	border: 1px solid #dcdfe6;
+	border-radius: 3px;
 }
 
 </style>

@@ -46,6 +46,7 @@ exports.Post = mongolass.model('Post', {
   title: { type: 'string', required: true },
   content: { type: 'string', required: true },
   classify: { type: 'string', requred: true },
+  imageUrls: { type: Array },
   markblog: { type: 'string' },
   pv: { type: 'number', default: 0 }
 })
@@ -64,4 +65,10 @@ exports.Comment.index({ author: 1, _id: 1 }).exec();// 通过用户 id 和留言
 exports.Call = mongolass.model('Call', {
   postId: { type: 'string' },
   username: { type: 'string' }
+})
+
+exports.Feedback = mongolass.model('Feedback', {
+  email: { type: 'string' },
+  questions: { type: 'string' },
+  suggestions: { type: 'string' }
 })

@@ -2,21 +2,41 @@
 	<div id="blogboard">
 		<div class="board-lay">
 			<div class="ll-tip">
-				<p>在这儿编辑您的博客吧~</p>
+				<p><i class="icon-leaf el-icon--left"></i>在~这儿~编辑您的博客吧~</p>
 			</div>
 			<div class="title">
 				<el-input v-model="title" placeholder=" 请输入标题"></el-input>
 			</div>
 			<div class="input">
-				<el-input type="textarea" :autosize="{ minRows: 3, maxRows: 8}" placeholder="请输入简要内容" resize="none" v-model="content">
+				<el-input type="textarea" :autosize="{ minRows: 3, maxRows: 8 }" placeholder="请输入简要内容" resize="none" v-model="content">
 				</el-input>
 			</div>
 			<div class="classify">
-				<span>分类：</span>
-				<el-select v-model="classify" multiple collapse-tags placeholder="请选择">
-					<el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
-					</el-option>
-				</el-select>
+				<el-popover ref="popover1" v-model="visible1">
+					<el-select v-model="classify" multiple collapse-tags placeholder="请选择">
+						<el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
+						</el-option>
+					</el-select>
+				</el-popover>
+				<el-button v-popover:popover1 type="text"><i class="icon-attachment"></i>
+					<div class="button-font">分类</div>
+				</el-button>
+			</div>
+			<div class="imgs-upload">
+				<el-popover ref="popover2" v-model="visible2" width="278">
+					<p style="font-weight: 700;margin: 7px 8px">本地上传</p>
+					<div style="margin-left: 8px">
+						<el-upload :limit="9" name="imageUpload" action="api/posts/upload" list-type="picture-card" :on-preview="handleImagesPreview" :on-remove="handleImagesRemove" :on-success="handleImagesSuccess" :class="{ hiddenIcon: visible3 }">
+							<i class="el-icon-plus"></i>
+						</el-upload>
+						<el-dialog :visible.sync="dialogVisible">
+							<img width="100%" :src="dialogImageUrl" alt="">
+						</el-dialog>
+					</div>
+				</el-popover>
+				<el-button v-popover:popover2 type="text"><i class="icon-image el-icon--left"></i>
+					<div class="button-font">图片</div>
+				</el-button>
 			</div>
 			<div class="ll-button">
 				<el-button type="primary" @click="toBlogView">生成博客</el-button>
@@ -32,6 +52,11 @@
 export default {
 	data() {
 		return {
+			visible1: false,
+			visible2: false,
+			visible3: false,
+			dialogImageUrl: '',
+			dialogVisible: false,
 			nickname: '',
 			headUrl: '',
 			title: '',
@@ -74,6 +99,7 @@ export default {
 				label: '动漫'
 			}],
 			classify: [],
+			imageUrls: [],
 			markblog: '',
 		}
 	},
@@ -93,7 +119,7 @@ export default {
 		createPost() {
 			let _this = this;
 
-			if(!this.nickname) {
+			if (!this.nickname) {
 				_this.$notify({
 					title: '失败',
 					message: '填写个人信息后才可以发表简博哦~',
@@ -119,6 +145,7 @@ export default {
 				title: this.title,
 				content: this.content,
 				classify: this.classify.toString(),
+				imageUrls: this.imageUrls,
 				markblog: this.markblog
 			}).then(function(res) {
 				if (res.data.postCode === 1) {
@@ -142,8 +169,23 @@ export default {
 			})
 		},
 		toBlogView() {
-			this.$router.push({ name: 'blogedit', params: { title: this.title, content: this.content, classify: this.classify } })
+			this.$router.push({ name: 'blogedit', params: { title: this.title, content: this.content, classify: this.classify, imageUrls: this.imageUrls } })
 			// Bus.$emit('getTarget', this.title)
+		},
+		handleImagesRemove(file, fileList) {
+			if (fileList.length < 9) {
+				this.visible3 = false;
+			}
+		},
+		handleImagesPreview(file) {
+			this.dialogImageUrl = file.url;
+			this.dialogVisible = true;
+		},
+		handleImagesSuccess(response, file, fileList) {
+			if (fileList.length == 9) {
+				this.visible3 = true;
+			}
+			this.imageUrls.push(response.imageUrl)
 		}
 	}
 }
@@ -159,6 +201,10 @@ export default {
 .ll-tip p {
 	margin: 0;
 	padding: 0 0 8px 0;
+	color: #eb7350;
+	font-size: 16px;
+	font-weight: 600;
+	font-style:oblique
 }
 
 .title {
@@ -176,6 +222,35 @@ export default {
 
 .classify {
 	float: left;
+	margin-right: 35px;
+}
+
+.imgs-upload {
+	float: left;
+	margin-right: 35px;
+}
+
+.classify .el-button--text,
+.imgs-upload .el-button--text {
+	display: inline-block;
+	color: #2c3e50;
+	font-size: 10px;
+	padding-bottom: 5px;
+}
+
+.classify .el-button--text:hover,
+.imgs-upload .el-button--text:hover {
+	color: #2aa957;
+}
+
+.classify i {
+	color: #ffa405;
+	font-size: 20px;
+}
+
+.imgs-upload i {
+	color: #39a175;
+	font-size: 20px;
 }
 
 .ll-button {
@@ -184,6 +259,13 @@ export default {
 
 .clear {
 	clear: both;
+}
+
+.button-font {
+	display: inline-block;
+	position: absolute;
+	margin-top: 5px;
+	/*margin-right: 10px;*/
 }
 
 </style>

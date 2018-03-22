@@ -110,7 +110,24 @@ export default {
 				username: JSON.parse(localStorage.getItem('user')).username,
 				form: _this.form
 			}).then(function(res) {
-				location.reload()
+				if (res.data.infoCode === 1) {
+					_this.$notify({
+						title: '成功',
+						message: '资料修改成功',
+						type: 'success',
+						position: 'bottom-right'
+					})
+					setTimeout(function() {
+						location.reload()
+					}, 500)
+				} else {
+					_this.$notify({
+						title: '错误',
+						message: '资料修改失败，请重试！',
+						type: 'error',
+						position: 'bottom-right'
+					})
+				}
 			})
 		},
 		handleAvatarSuccess(res, file) {

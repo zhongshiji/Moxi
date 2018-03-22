@@ -70,6 +70,19 @@ module.exports = {
 			.find(query)
 			.sort({ _id: -1 })
 			.addCreatedAt()
+			.addCommentsCount()
+			.exec()
+	},
+
+	//通过文章标题获取此类别所有文章
+	getPostsByTitle: function getPostsByTitle(search) {
+		const query = {}
+		query.title = new RegExp(search)
+		return Post
+			.find(query)
+			.sort({ _id: -1 })
+			.addCreatedAt()
+			.addCommentsCount()
 			.exec()
 	},
 

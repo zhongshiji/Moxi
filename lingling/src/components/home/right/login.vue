@@ -14,8 +14,8 @@
 					<br>
 					<br>
 					<div style="margin-top: 5px;">
-						<el-button class="login-button" size="small" v-if="ifLogintab" type="success" @click="login">登 录</el-button>
-						<el-button class="regis-button" size="small" v-if="ifRegisTab" type="danger" @click="regis">注 册</el-button>
+						<el-button class="login-button" size="small" v-if="ifLogintab" type="success" @click="login" @keyup.enter="login">登 录</el-button>
+						<el-button class="regis-button" size="small" v-if="ifRegisTab" type="danger" @click="regis" @keyup.enter="regis">注 册</el-button>
 					</div>
 					<br>
 					<div style="float: right">

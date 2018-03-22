@@ -1,6 +1,9 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import home from '@/components/home'
+import search from '@/components/search'
+import other from '@/components/other'
+import about from '@/components/about'
 import homeselect from '@/components/home/homeselect'
 import lingling from '@/components/lingling'
 import changeinfo from '@/components/lingling/changeinfo'
@@ -21,6 +24,21 @@ export default new Router({
       path: '/home/:type',
       name: 'homeselect',
       component: homeselect
+    },
+    {
+      path: '/search/:search',
+      name: 'search',
+      component: search
+    },
+    {
+      path: '/markdownUsage',
+      name: 'other',
+      component: other
+    },
+    {
+      path: '/about',
+      name: 'about',
+      component: about
     },
     {
     	path: '/lingling',

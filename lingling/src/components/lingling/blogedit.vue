@@ -119,6 +119,7 @@ export default {
 				label: '动漫'
 			}],
 			classify: [],
+			imageUrls: [],
 			markblog: '# hello'
 		}
 	},
@@ -144,6 +145,7 @@ export default {
 		this.title = this.$route.params.title
 		this.tinyblog = this.$route.params.content
 		this.classify = this.$route.params.classify
+		this.imageUrls = this.$route.params.imageUrls
 
 		// Bus.$on('getTarget', target => {
 		// 	console.log(target);
@@ -191,6 +193,7 @@ export default {
 				title: this.title,
 				content: this.tinyblog,
 				classify: this.classify.toString(),
+				imageUrls: this.imageUrls,
 				markblog: this.markblog
 			}).then(function (res) {
 				if (res.data.postCode === 1) {

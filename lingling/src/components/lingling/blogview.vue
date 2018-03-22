@@ -62,6 +62,7 @@
 						<span class="name">{{ comment.authornick }}</span>
 						<div class="meta">{{ comment.created_at }}</div>
 					</div>
+					<div class="delete" v-if="comment.author == user" @click="deleteComment(index)">删除</div>
 				</div>
 				<div class="comment-wrap">
 					<p>{{ comment.content }}</p>
@@ -83,7 +84,14 @@ export default {
 			content: '',
 			comments: [],
 			commentsCount: 0,
-			callsCount: 0
+			callsCount: 0,
+		}
+	},
+	computed: {
+		user () {
+			if (this.$store.state.user) {
+				return JSON.parse(this.$store.state.user).username
+			}
 		}
 	},
 	methods: {
@@ -130,7 +138,7 @@ export default {
 					})
 				}
 			})
-			
+
 		},
 		handleSubmit() {
 			let _this = this;
@@ -163,6 +171,31 @@ export default {
 					}, 500)
 				} else {
 					_this.$notify({
+						title: '错误',
+						message: res.data.msg,
+						type: 'error',
+						position: 'bottom-right'
+					})
+				}
+			})
+		},
+		deleteComment(index) {
+			console.log(this.comments[index]._id)
+			this.$http.post('api/comments/deleteComment', {
+				commentId: this.comments[index]._id
+			}).then((res) => {
+				if (res.data.state === 1) {
+					this.$notify({
+						title: '成功',
+						message: res.data.msg,
+						type: 'success',
+						position: 'bottom-right'
+					})
+					setTimeout(function() {
+						location.reload()
+					}, 500)
+				} else {
+					this.$notify({
 						title: '错误',
 						message: res.data.msg,
 						type: 'error',
@@ -209,14 +242,14 @@ export default {
 		})
 
 		this.$http.get('api/calls/', {
-				params: { postId: this.$route.params.postId }
-			}).then(function (res) {
-				if (res.data[0]) {
-					_this.callsCount = res.data[0].username.length
-				} else {
-					_this.callsCount = 0
-				}
-			})
+			params: { postId: this.$route.params.postId }
+		}).then(function(res) {
+			if (res.data[0]) {
+				_this.callsCount = res.data[0].username.length
+			} else {
+				_this.callsCount = 0
+			}
+		})
 	}
 }
 
@@ -361,6 +394,17 @@ img {
 	display: inline-block;
 	vertical-align: top;
 	outline-style: none;
+}
+
+.delete {
+	float: right;
+	cursor: pointer;
+	color: #ddd;
+}
+
+.delete:hover {
+	color: #ada4a4;
+	border-bottom: solid 1px #ada4a4;
 }
 
 .clear {

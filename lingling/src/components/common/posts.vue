@@ -2,8 +2,11 @@
 	<div id="posts">
 		<div class="a-post" v-for="post,index in posts" :key="post._id">
 			<div class="a-post-layout">
+				<div class="a-post-image" v-if="post.imageUrls[0]" @click="toBlogView(index)">
+					<img :src="post.imageUrls[0]" alt="120" />
+				</div>
 				<div class="headshot" @click="toUserMain(index)">
-					<img :src="post.headUrl" title="咘噜咘噜嘻哗哒" />
+					<img :src="post.headUrl" title="Visit Writer" />
 				</div>
 				<div class="a-post-detail">
 					<div class="post-title" @click="toBlogView(index)">
@@ -19,8 +22,8 @@
 			</div>
 			<div class="post-end">
 				<el-button-group>
-					<el-button icon="el-icon-view">浏览 {{ post.pv }}</el-button>
-					<el-button icon="el-icon-edit-outline" @click="toBlogView(index)">评论 {{ post.commentsCount }}</el-button>
+					<el-button icon="icon-eye"> 浏览 {{ post.pv }}</el-button>
+					<el-button icon="icon-quill" @click="toBlogView(index)"> 评论 {{ post.commentsCount }}</el-button>
 					<el-button icon="icon-heart" @click="playcall(index)"> 喜欢 {{ post.callsCount }}</el-button>
 				</el-button-group>
 			</div>
@@ -69,7 +72,7 @@ export default {
 				})
 				return
 			}
-			
+
 			_this.$http.get('/api/calls/', {
 				params: { postId: _this.posts[index]._id }
 			}).then(function(res) {
@@ -100,7 +103,7 @@ export default {
 	},
 	created() {
 		let _this = this;
-		//获取所有❤喜欢
+		//获取所有❤喜欢❤
 		const calls = _this.$http.get('/api/calls/all')
 			.then(function(res) {
 				return res.data
@@ -127,9 +130,46 @@ export default {
 					}
 				}
 				this.posts = result[0];
-				console.log(result[0])
+				if (result[0].length == 0) {
+					_this.$message({
+						showClose: true,
+						message: '没有相关博客',
+						type: 'warning'
+					});
+				}
+			})
+		} else if (this.search) {
+			// 如果是通过搜索框搜索
+			const posts = this.$http.get('/api/posts/search', {
+				params: {
+					search: this.$route.params.search
+				}
+			}).then(function(res) {
+				return res.data;
+			})
+
+			Promise.all([posts, calls]).then((result) => {
+				// console.log(result);
+				// console.log(result[0][0].author._id)
+				// console.log(result[1][0].username.length)
+				for (var i = 0; i < result[0].length; i++) {
+					for (var j = 0; j < result[1].length; j++) {
+						if (result[0][i]._id == result[1][j].postId) {
+							result[0][i].callsCount = result[1][j].username.length
+						}
+					}
+				}
+				this.posts = result[0];
+				if (result[0].length == 0) {
+					_this.$message({
+						showClose: true,
+						message: '没有相关博客',
+						type: 'warning'
+					});
+				}
 			})
 		} else {
+			//获取所有博客
 			const posts = this.$http.get('/api/posts/', {
 				params: { author: this.author }
 			}).then((res) => {
@@ -148,14 +188,13 @@ export default {
 					}
 				}
 				this.posts = result[0];
-				console.log(result[0])
 			})
 		}
 
-
 	},
 	props: [
-		'author'
+		'author',
+		'search'
 	]
 }
 
@@ -171,8 +210,22 @@ export default {
 	margin-bottom: 10px;
 }
 
+.a-post-image {
+	cursor: pointer;
+	float: right;
+	margin: 10px 0 5px 5px;
+	width: 150px;
+	height: 120px;
+}
+
+.a-post-image img {
+	border-radius: 5px;
+	width: 150px;
+	height: 120px;
+}
+
 .a-post-layout {
-	padding: 20px 20px 4px;
+	padding: 15px 20px 4px;
 }
 
 .headshot {

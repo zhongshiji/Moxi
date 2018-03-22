@@ -11,7 +11,7 @@ const CommentModel = require('../models/comments')
 const checkLogin = require('../middlewares/check').checkLogin
 const checkNotLogin = require('../middlewares/check').checkNotLogin
 
-//设置图片上传目录位置
+//设置头像图片上传目录位置
 const upload = multer({
 	dest: 'static/images/upload/'
 })

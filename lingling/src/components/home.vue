@@ -45,7 +45,6 @@ export default {
 				if (res.data.checkCode == 1) {
 					_this.$router.push('/lingling');
 				}
-				console.log(res.data.welcome);
 			})
 	},
 	methods: {
