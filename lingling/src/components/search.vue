@@ -38,6 +38,7 @@ export default {
 	margin: 0;
 	padding: 54px 0 0 0;
 	/*background: #983838;*/
+	background: url(../../static/images/5-150213143516-51.gif) center 0 repeat #b4daf0;
 }
 
 .LL-layout {
@@ -45,6 +46,7 @@ export default {
 	padding-top: 20px;
 	padding-bottom: 40px;
 	width: 620px;
+	min-height: 620px;
 }
 
 .main-layout {

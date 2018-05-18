@@ -205,9 +205,12 @@ export default {
 }
 
 .a-post {
-	border: 1px #93d0b3 solid;
+	border: 1px #ccc solid;
+	/*#93d0b3*/
 	border-radius: 3px;
 	margin-bottom: 10px;
+	box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.15) inset;
+	background: #fff;
 }
 
 .a-post-image {

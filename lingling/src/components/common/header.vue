@@ -2,7 +2,7 @@
 	<header class="el-header">
 		<el-row type="flex" justify="start" :gutter="10">
 			<el-col :span="3">
-				<div class="logo grid-content" @click="tohome"></div>
+				<div class="logo grid-content" @click="toHome"></div>
 			</el-col>
 			<el-col :span="8" :offset="1">
 				<el-input placeholder="搜索博客" v-model="search" size="small" @keyup.enter.native="toSearchPage">
@@ -13,7 +13,7 @@
 				<div class="h-list grid-content">
 					<ul class="header-list">
 						<li>
-							<el-button type="text" @click="tohome"><i class="icon-home1 el-icon--left"></i>首页</el-button>
+							<el-button type="text" @click="toHome"><i class="icon-home1 el-icon--left"></i>首页</el-button>
 						</li>
 						<li>
 							<el-button type="text" @click="toOther"><i class="icon-book el-icon--left"></i>资料</el-button>
@@ -71,7 +71,7 @@ export default {
 		haveloggedin: haveloggedin
 	},
 	methods: {
-		tohome() {
+		toHome() {
 			let _this = this;
 			this.$http.get('/api/')
 				.then(function(res) {
@@ -218,7 +218,9 @@ ul {
 	top: 0;
 	left: 0;
 	/*background-color: #fff;*/
-	background-color: rgba(54, 128, 94, 0.75);
+	/*background-color: rgba(54, 128, 94, 0.75);*/
+	/*background-color: rgba(214, 206, 189, 0.75);*/
+	background-color: rgba(222, 214, 189, 0.75);
 	color: #444;
 	text-align: center;
 	line-height: 54px;

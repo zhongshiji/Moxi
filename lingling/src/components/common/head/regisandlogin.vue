@@ -112,7 +112,7 @@ export default {
 </script>
 <style scoped>
 .regis {
-	padding-right: 16px;
+	padding-right: 7px;
 	border-right: solid #333 1px;
 }
 

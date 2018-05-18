@@ -43,9 +43,11 @@ export default {
 .el-button {
 	color: #333;
 	font-size: 18px;
+	/*font-weight: 500;*/
 	width: 100%;
 	margin: 0 0 3px 0;
 	border: none;
+	background: transparent;
 }
 
 .el-button:hover {

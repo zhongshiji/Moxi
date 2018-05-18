@@ -47,6 +47,7 @@ export default {
 	margin: 0;
 	padding: 54px 0 0 0;
 	/*background: #983838;*/
+	background: url(../../../static/images/5-150213143516-51.gif) center 0 repeat #b4daf0;
 }
 
 .LL-layout {

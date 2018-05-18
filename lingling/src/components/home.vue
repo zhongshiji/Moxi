@@ -62,6 +62,9 @@ export default {
 	left: 0;
 	margin: 0;
 	padding: 54px 0 0 0;
+	background: url(../../static/images/5-150213143516-51.gif) center 0 repeat #b4daf0;
+	/*background-size: 100%;*/
+	/*background-attachment: fixed;*/
 }
 
 .LL-layout {

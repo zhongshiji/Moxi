@@ -196,6 +196,7 @@ export default {
 	border: solid 1px #93d0b3;
 	border-radius: 3px;
 	padding: 15px 10px 10px;
+	background: #fff;
 }
 
 .ll-tip p {
